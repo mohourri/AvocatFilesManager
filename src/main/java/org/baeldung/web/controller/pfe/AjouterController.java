@@ -300,10 +300,10 @@ public class AjouterController {
 		
 			Indemnite indem = new Indemnite(Long.parseLong(id_victime), idDawi, relation_avec_victime, droit_compensation);
 			ajouterService.ajouterIndemnite(indem);
-			
+
+			DroitsPersonneDecedee victimDawi = new DroitsPersonneDecedee();
 			for (Indemnite object : ajouterService.listeIndemnites()) {
 				if(object.getIdVictime().toString().equals(id_victime.toString())) {
-					DroitsPersonneDecedee victimDawi = new DroitsPersonneDecedee();
 					victimDawi = (DroitsPersonneDecedee)ajouterService.consulterDawi(object.getIdDawi());
 					if(victimeDawis.size() == 0)
 						victimeDawis.add(new GenericResponse("تم إضافة ذي الحقوق بنجاح", "success"));

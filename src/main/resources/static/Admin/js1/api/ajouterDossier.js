@@ -408,6 +408,31 @@ function addDawiEvent(event) {
   }*/
 }
 
+
+function supprimerDawi(id){
+	let text = "voulez-vous vraiment supprimer ce titulaire de droit ?";
+	  if (confirm(text) == true) {
+			$.ajax({
+			    type: "POST",
+			    url: "Client/ajouterDossier/supprimerDawi",
+			    processData: false,
+			    contentType: false,
+			    cache: false,
+			    data: id,
+			    timeout: 600000,
+			    success: function (data) {
+			      if (data[0]["error"] == "success") {
+			      } else if (data[0]["error"] == "error") {
+			      }
+			    },
+			    error: function () {},
+		  });
+	  } else {
+	    text = "You canceled!";
+	  }
+  
+}
+
 function fire_ajax_dawi(formData) {
   $.ajax({
     type: "POST",
@@ -429,21 +454,22 @@ function fire_ajax_dawi(formData) {
         $("#dawiModalBtn").empty();
         $("#dawiModalBtn").append(btn);
         
-		for (var i = 0; i < data.length; i++) { 
+		for (var i = 1; i < data.length; i++) { 
 			
         var dawi_element =
-          "<tr><td>" +
-          data[i]["cin"] +
-          "</td><td>" +
-          data[i]["prenom"] +
-          "</td > <td>" +
-          data[i]["nom"] +
-          "</td> <td>" +
-          data[i]["proffession"] +
-          '</td><td class="text-right"><div class="btn-group"><button class="btn-white btn btn-xs">إطلاع</button><button class="btn-white btn btn-xs">حذف</button></div></td></tr>';
-        $("#table_dawi_body").append(dawi_element);
+	          "<tr><td>الأب</td><td>" +
+	          data[i]["cin"] +
+	          "</td><td>" +
+	          data[i]["prenom"] +
+	          "</td > <td>" +
+	          data[i]["nom"] +
+	          "</td><td>" +
+	          data[i]["proffession"] +
+	          '</td><td class="text-right"><div class="btn-group"><button class="btn-white btn btn-xs">تعديل</button><button onclick="supprimerDawi('+data[i]["id"]+');" class="btn-white btn btn-xs">حذف</button></div></td></tr>';
+	        console.log(data[i]);
 		}
-
+		$("#table_dawi_body").empty();
+		$("#table_dawi_body").append(dawi_element);
         
       } else {
 		console.log(data[0]["error"]);
