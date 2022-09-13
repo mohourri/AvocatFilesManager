@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>إدارة الحوادث • الرئيسية</title>
+
+    <link href="css1/bootstrap.min1.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css1/plugins/bootstrap-rtl/bootstrap-rtl.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="img1/law-favicon.svg">
+    <link href="css1/plugins/iCheck/custom.css" rel="stylesheet">
+    
+
+    <!-- Gritter -->
+    <link href="js1/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+    
+    
+    <link href="css1/animate1.css" rel="stylesheet">
+    <link href="css1/style1.css" rel="stylesheet">
+    
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	
+	<style type="text/css">
+    	@import url('https://fonts.googleapis.com/earlyaccess/droidarabickufi.css');
+    	*{
+    		font-family: 'Droid Arabic Kufi';
+    	}
+    </style>
+</head>
+
+<body class="rtls">
+
+    <div id="wrapper">
+
+    <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+
+                    <li class="nav-header active">
+                        <div class="dropdown profile-element">
+                            <a th:href="@{/Client/index}"><img alt="image" class="rounded-circle" src="img1/justice-green.png" width="120"/></a>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#" th:object="${user}">
+                                <span class="block m-t-xs font-bold" th:text="${user.firstName}+' '+${user.lastName}">Unknown</span>
+                                <span class="text-muted text-xs block">محامي<b class="caret"></b></span>
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a class="dropdown-item" th:href="@{/profile}">الصفحة الشخصية</a></li>
+                                <li><a class="dropdown-item" th:href="@{/contacts}">جهات الاتصال</a></li>
+                                <li><a class="dropdown-item" th:href="@{/mailbox}">صندوق البريد</a></li>
+                                <li class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" th:href="@{/index}">تسجيل الخروج</a></li>
+                            </ul>
+                        </div>
+                        <div class="logo-element">
+                            <a th:href="@{/Client/index}"><i class="fa fa-home"></i></a>
+                        </div>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/Client/ajouterDossier}"><i class="fa fa-plus"></i> <span class="nav-label">إضافة ملف جديد</span></a>
+                    </li>
+                    
+                    <li>
+                        <a href="#"><i class="fa fa-gavel"></i> <span class="nav-label">الجلسات</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a th:href="@{/Client/seancesAujourdhui}">جلسات اليوم</a></li>
+                            <li><a th:href="@{/Client/prochainesSeances}">الجلسات المقبلة</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <a th:href="@{/Client/consulterDossier}"><i class="fa fa-book-open"></i> <span class="nav-label">إطِّلاع</span></a>
+                    </li>
+                    
+                    <li>
+                        <a th:href="@{/Client/rechercher}"><i class="fa fa-search"></i> <span class="nav-label">بحث</span></a>
+                    </li>
+                    
+                    <li>
+                        <a href="#"><i class="fa fa-globe-africa"></i> <span class="nav-label">خدمات أخرى</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                        	<li><a th:href="@{/typography}" >مكتبة قانونية</a></li>
+                            <li><a th:href="@{/icons}" >الصفحة الالكترونية</a></li>
+                            <li><a th:href="@{/draggable_panels}" >دليل المستخدم</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#"><i class="fa fa-database"></i> <span class="nav-label">قاعدة البيانات</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                        	<li><a th:href="@{/table_basic}" >استيراد</a></li>
+                            <li><a th:href="@{/table_data_tables}"  >تصدير</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+        
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                    <form role="search" class="navbar-form-custom" th:action="@{/Client/rechercher}">
+                        <div class="form-group">
+                            <input type="text" placeholder="ابحث عن شيء ما..." class="form-control" name="top-search" id="top-search">
+                        </div>
+                    </form>
+                </div>
+            
+                <ul class="nav navbar-top-links navbar-right">
+                
+                    <li style="padding: 20px">
+                        <span class="m-r-sm text-muted welcome-message" th:text="${user.email}"></span>
+                    </li>
+                    
+                    <li class="dropdown">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" th:href="@{/Client/seancesAujourdhui}">
+                            <i class="fa fa-bell"></i>  <span class="label label-primary" th:text="${nombreSeancesAujourdhui}">0</span>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a th:href="@{/logout}">
+                            <i class="fa fa-sign-out-alt"></i> خروج
+                        </a>
+                    </li>
+                    
+                </ul>
+    
+            </nav>
+        </div>
+
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-9">
+                <h2 style="text-align:right">إدارة حوادث السير</h2>
+                <p>مرحبا بكم في موقع <strong>إدارة حوادث السير</strong> يمكنكم تنظيم جلساتكم بكل سهولة</p>
+            </div>
+        </div>
+
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="widget style1">
+                            <div class="row">
+                                <div class="col-4 text-center">
+                                    <i class="fas fa-folder fa-5x"></i>
+                                </div>
+                                <div class="col-8 text-right">
+                                    <span> عدد الملفات الاجمالية </span>
+                                    <h2 class="font-bold" th:text="${nombreDossiers}">0</h2>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="widget style1 navy-bg">
+                        <div class="row">
+                            <div class="col-4">
+                                <i class="fas fa-plus-square fa-5x"></i>
+                            </div>
+                            <div class="col-8 text-right">
+                                <span> آخر ملف تمت إضافته </span>
+                                <h3 class="font-bold" th:text="${dernierDossier}">D00</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="widget style1 lazur-bg">
+                        <div class="row">
+                            <div class="col-4">
+                            	<i class="fas fa-calendar-day fa-5x"></i>
+                            </div>
+                            <div class="col-8 text-right">
+                                <span> عدد جلسات اليوم </span>
+                                <h2 class="font-bold" th:text="${nombreSeancesAujourdhui}">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="widget style1 lazur-bg">
+                        <div class="row">
+                            <div class="col-4">
+                            	<i class="fas fa-calendar-week fa-5x"></i>
+                            </div>
+                            <div class="col-8 text-right">
+                                <span> عدد جلسات الاسبوع </span>
+                                <h2 class="font-bold" th:text="${nombreSeancesSemaine}">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="text-align: right">
+                <div class="col-lg-6">
+                    <div class="widget navy-bg no-padding">
+                        <div class="p-m" style="padding-right: 50px;">
+                            <h1 class="m-xs">أقرب جلسة</h1>
+                            <h3 class="font-bold" style="padding-right: 7px;" th:text="${#dates.format(seancePlusProche.dateSeance, 'yyyy / MM / dd')}">dd / mm / yyyy</h3>
+                            <br>
+                            
+                            <span class="font-bold"> المحكمة: </span><span th:text="${seancePlusProche.tribunal}"></span><br>
+                            <span class="font-bold"> الملاحظة: </span><span th:text="${seancePlusProche.commentaire}"></span>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="widget style1 yellow-bg">
+                        <div class="row" onclick="window.open('https://www.mahakim.ma/', '_blank');" style="cursor:pointer;">
+                            <div class="col-4">
+                            	<i class="fas fa-gavel fa-4x"></i>
+                            </div>
+                            <div class="col-8 text-right">
+                                <span> موقع محاكم </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="widget style1 yellow-bg">
+                        <div class="row" onclick="window.open('http://www.justice.gov.ma/', '_blank');" style="cursor:pointer;">
+                            <div class="col-4">
+                            	<i class="fas fa-balance-scale fa-4x"></i>
+                            </div>
+                            <div class="col-8 text-right">
+                                <span> موقع وزارة العدل </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+                <div class="float-right">
+                    <strong>إدارة حوادث السير</strong>
+                </div>
+                <div class="float-left">
+                    <strong>جميع الحقوق محفوظة</strong> &copy; 2020-2021
+                </div>
+            </div>
+
+        </div>
+        </div>
+
+    <!-- Mainly scripts -->
+    <script src="js1/jquery-3.1.1.min.js"></script>
+    <script src="js1/popper.min.js"></script>
+    <script src="js1/bootstrap1.js"></script>
+    <script src="js1/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js1/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- jquery UI -->
+    <script src="js1/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <!-- Touch Punch - Touch Event Support for jQuery UI -->
+    <script src="js1/plugins/touchpunch/jquery.ui.touch-punch.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js1/inspinia.js"></script>
+    <script src="js1/plugins/pace/pace.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="js1/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Jvectormap -->
+    <script src="js1/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="js1/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+
+    <!-- Flot -->
+    <script src="js1/plugins/flot/jquery.flot.js"></script>
+    <script src="js1/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="js1/plugins/flot/jquery.flot.spline.js"></script>
+    <script src="js1/plugins/flot/jquery.flot.resize.js"></script>
+    <script src="js1/plugins/flot/jquery.flot.pie.js"></script>
+
+    <!-- Peity -->
+    <script src="js1/plugins/peity/jquery.peity.min.js"></script>
+    <script src="js1/demo/peity-demo.js"></script>
+
+    <!-- GITTER -->
+    <script src="js1/plugins/gritter/jquery.gritter.min.js"></script>
+
+    <!-- Sparkline -->
+    <script src="js1/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Sparkline demo data  -->
+    <script src="js1/demo/sparkline-demo.js"></script>
+
+    <!-- ChartJS-->
+    <script src="js1/plugins/chartJs/Chart.min.js"></script>
+
+
+    <script>
+        $(document).ready(function(){
+            var d1 = [[1262304000000, 6], [1264982400000, 3057], [1267401600000, 20434], [1270080000000, 31982], [1272672000000, 26602], [1275350400000, 27826], [1277942400000, 24302], [1280620800000, 24237], [1283299200000, 21004], [1285891200000, 12144], [1288569600000, 10577], [1291161600000, 10295]];
+            var d2 = [[1262304000000, 5], [1264982400000, 200], [1267401600000, 1605], [1270080000000, 6129], [1272672000000, 11643], [1275350400000, 19055], [1277942400000, 30062], [1280620800000, 39197], [1283299200000, 37000], [1285891200000, 27000], [1288569600000, 21000], [1291161600000, 17000]];
+
+            var data1 = [
+                { label: "Data 1", data: d1, color: '#17a084'},
+                { label: "Data 2", data: d2, color: '#127e68' }
+            ];
+            $.plot($("#flot-chart1"), data1, {
+                xaxis: {
+                    tickDecimals: 0
+                },
+                series: {
+                    lines: {
+                        show: true,
+                        fill: true,
+                        fillColor: {
+                            colors: [{
+                                opacity: 1
+                            }, {
+                                opacity: 1
+                            }]
+                        }
+                    },
+                    points: {
+                        width: 0.1,
+                        show: false
+                    }
+                },
+                grid: {
+                    show: false,
+                    borderWidth: 0
+                },
+                legend: {
+                    show: false
+                }
+            });
+
+            var data2 = [
+                { label: "Data 1", data: d1, color: '#19a0a1'}
+            ];
+            $.plot($("#flot-chart2"), data2, {
+                xaxis: {
+                    tickDecimals: 0
+                },
+                series: {
+                    lines: {
+                        show: true,
+                        fill: true,
+                        fillColor: {
+                            colors: [{
+                                opacity: 1
+                            }, {
+                                opacity: 1
+                            }]
+                        }
+                    },
+                    points: {
+                        width: 0.1,
+                        show: false
+                    }
+                },
+                grid: {
+                    show: false,
+                    borderWidth: 0
+                },
+                legend: {
+                    show: false
+                }
+            });
+
+            var data3 = [
+                { label: "Data 1", data: d1, color: '#fbbe7b'},
+                { label: "Data 2", data: d2, color: '#f8ac59' }
+            ];
+            $.plot($("#flot-chart3"), data3, {
+                xaxis: {
+                    tickDecimals: 0
+                },
+                series: {
+                    lines: {
+                        show: true,
+                        fill: true,
+                        fillColor: {
+                            colors: [{
+                                opacity: 1
+                            }, {
+                                opacity: 1
+                            }]
+                        }
+                    },
+                    points: {
+                        width: 0.1,
+                        show: false
+                    }
+                },
+                grid: {
+                    show: false,
+                    borderWidth: 0
+                },
+                legend: {
+                    show: false
+                }
+            });
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+            $(".todo-list").sortable({
+                placeholder: "sort-highlight",
+                handle: ".handle",
+                forcePlaceholderSize: true,
+                zIndex: 999999
+            }).disableSelection();
+
+            var mapData = {
+                "US": 498,
+                "SA": 200,
+                "CA": 1300,
+                "DE": 220,
+                "FR": 540,
+                "CN": 120,
+                "AU": 760,
+                "BR": 550,
+                "IN": 200,
+                "GB": 120,
+                "RU": 2000
+            };
+
+            $('#world-map').vectorMap({
+                map: 'world_mill_en',
+                backgroundColor: "transparent",
+                regionStyle: {
+                    initial: {
+                        fill: '#e4e4e4',
+                        "fill-opacity": 1,
+                        stroke: 'none',
+                        "stroke-width": 0,
+                        "stroke-opacity": 0
+                    }
+                },
+                series: {
+                    regions: [{
+                        values: mapData,
+                        scale: ["#1ab394", "#22d6b1"],
+                        normalizeFunction: 'polynomial'
+                    }]
+                }
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>

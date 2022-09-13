@@ -1,0 +1,206 @@
+<!--
+*
+*  INSPINIA - Responsive Admin Theme
+*  version 2.8
+*
+-->
+
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>القائمة الرئيسية</title>
+
+    <link href="css1/bootstrap.min1.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css1/plugins/bootstrap-rtl/bootstrap-rtl.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="img1/law-favicon.svg">
+
+    <!-- Toastr style -->
+    <!-- <link href="css1/plugins/toastr/toastr.min.css" rel="stylesheet"> -->
+
+    <!-- Gritter -->
+    <link href="js1/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+
+    <link href="css1/animate1.css" rel="stylesheet">
+    <link href="css1/style1.css" rel="stylesheet">
+
+</head>
+
+<body class="rtls">
+
+    <div id="wrapper">
+    
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+                    
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            <a href="#"><img alt="image" class="rounded-circle" src="img1/justice-green.png" width="120"/></a>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#" th:object="${user}">
+                                <span class="block m-t-xs font-bold" th:text="${user.firstName}">David Williams</span>
+                                <span class="text-muted text-xs block">محامي<b class="caret"></b></span>
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a class="dropdown-item" th:href="@{/profile}">الصفحة الشخصية</a></li>
+                                <li><a class="dropdown-item" th:href="@{/contacts}">جهات الاتصال</a></li>
+                                <li><a class="dropdown-item" th:href="@{/mailbox}">صندوق البريد</a></li>
+                                <li class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" th:href="@{/index}">تسجيل الخروج</a></li>
+                            </ul>
+                        </div>
+                        <div class="logo-element">
+                            <i class="fa fa-home"></i>
+                        </div>
+                    </li>
+ 
+                    <li>
+                        <a th:href="@{/Client/ajouterDossier}"><i class="fa fa-edit"></i> <span class="nav-label">إضافة ملف جديد</span></a>
+                    </li>
+                    
+                    <li>
+                        <a href="#"><i class="fa fa-desktop"></i> <span class="nav-label">الجلسات</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a th:href="@{/contacts}">جلسات اليوم</a></li>
+                            <li><a th:href="@{/profile}">الجلسات المقبلة</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <a th:href="@{/Client/consulterDossier}"><i class="fa fa-files-o"></i> <span class="nav-label">إطِّلاع</span></a>
+                    </li>
+                    
+                    <li>
+                        <a href="#"><i class="fa fa-globe"></i> <span class="nav-label">البحث</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                        	<li><a th:href="@{/toastr_notifications}" href="toastr_notifications.html">بحث عن ضحية</a></li>
+                            <li><a th:href="@{/nestable_list}" >بحث عن متهم</a></li>
+                            <li><a th:href="@{/agile_board}" >بحث عن شاهد</a></li>
+                            <li><a th:href="@{/timeline_2}" >بحث عن ملف</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <a href="#"><i class="fa fa-flask"></i> <span class="nav-label">خدمات أخرى</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                        	<li><a th:href="@{/typography}" >مكتبة قانونية</a></li>
+                            <li><a th:href="@{/icons}" >الصفحة الالكترونية</a></li>
+                            <li><a th:href="@{/draggable_panels}" >دليل المستخدم</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#"><i class="fa fa-table"></i> <span class="nav-label">قاعدة البيانات</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                        	<li><a th:href="@{/table_basic}" >استيراد</a></li>
+                            <li><a th:href="@{/table_data_tables}"  >تصدير</a></li>
+                        </ul>
+                    </li>
+				</ul>
+            </div>
+        </nav>
+
+        
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+        
+	        <div class="row border-bottom">
+		        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+			        <div class="navbar-header">
+			            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+			            <form role="search" class="navbar-form-custom" action="search_results.html">
+			                <div class="form-group">
+			                    <input type="text" placeholder="ابحث عن شيء ما..." class="form-control" name="top-search" id="top-search">
+			                </div>
+			            </form>
+			        </div>
+		        
+		            <ul class="nav navbar-top-links navbar-right">
+		            
+		                <li style="padding: 20px">
+		                    <span class="m-r-sm text-muted welcome-message" th:if="${param.user} != null" th:text="${param.user[0]}">Welcome  to INSPINIA+ Admin Theme.</span>
+		                </li>
+		                
+		                <li class="dropdown">
+		                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+		                        <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+		                    </a>
+		                </li>
+		                
+		                <li>
+		                    <a th:href="@{/logout}">
+		                        <i class="fa fa-sign-out"></i> خروج
+		                    </a>
+		                </li>
+		                
+		            </ul>
+		
+		        </nav>
+	        </div>
+        
+            
+            <div class="footer">
+                <div class="float-right">
+                    <strong>إدارة حوادث السير</strong>
+                </div>
+                <div class="float-left">
+                    <strong>جميع الحقوق محفوظة</strong> &copy; 2020-2021
+                </div>
+            </div>
+            
+        </div>
+        
+       </div>
+
+    <!-- Mainly scripts -->
+    <script src="js1/jquery-3.1.1.min.js"></script>
+    <script src="js1/popper.min.js"></script>
+    <script src="js1/bootstrap1.js"></script>
+    <script src="js1/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js1/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Flot -->
+    <script src="js1/plugins/flot/jquery.flot.js"></script>
+    <script src="js1/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="js1/plugins/flot/jquery.flot.spline.js"></script>
+    <script src="js1/plugins/flot/jquery.flot.resize.js"></script>
+    <script src="js1/plugins/flot/jquery.flot.pie.js"></script>
+
+    <!-- Peity -->
+    <script src="js1/plugins/peity/jquery.peity.min.js"></script>
+    <script src="js1/demo/peity-demo.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js1/inspinia.js"></script>
+    <script src="js1/plugins/pace/pace.min.js"></script>
+
+    <!-- jQuery UI -->
+    <script src="js1/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <!-- GITTER -->
+    <script src="js1/plugins/gritter/jquery.gritter.min.js"></script>
+
+    <!-- Sparkline -->
+    <script src="js1/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Sparkline demo data  -->
+    <script src="js1/demo/sparkline-demo.js"></script>
+
+    <!-- ChartJS-->
+    <script src="js1/plugins/chartJs/Chart.min.js"></script>
+
+    <!-- Toastr -->
+    <!-- <script src="js1/plugins/toastr/toastr.min.js"></script> -->
+
+
+    <script>
+       
+    </script>
+</body>
+</html>

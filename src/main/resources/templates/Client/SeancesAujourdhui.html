@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>إدارة الحوادث • جلسات اليوم</title>
+
+    <link href="css1/bootstrap.min1.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="css1/plugins/bootstrap-rtl/bootstrap-rtl.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="img1/law-favicon.svg">
+
+    <!-- FooTable -->
+    <link href="css1/plugins/footable/footable.core.css" rel="stylesheet">
+
+    <!-- Gritter -->
+    <link href="js1/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+    
+    <link href="css1/animate1.css" rel="stylesheet">
+    <link href="css1/style1.css" rel="stylesheet">
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+	<style type="text/css">
+    	@import url('https://fonts.googleapis.com/earlyaccess/droidarabickufi.css');
+    	*{
+    		font-family: 'Droid Arabic Kufi';
+    	}
+    </style>
+
+</head>
+
+<body class="rtls">
+
+    <div id="wrapper">
+
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            <a th:href="@{/Client/index}"><img alt="image" class="rounded-circle" src="img1/justice-green.png" width="120"/></a>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#" th:object="${user}">
+                                <span class="block m-t-xs font-bold" th:text="${user.firstName}+' '+${user.lastName}">Unknown</span>
+                                <span class="text-muted text-xs block">محامي<b class="caret"></b></span>
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a class="dropdown-item" th:href="@{/profile}">الصفحة الشخصية</a></li>
+                                <li><a class="dropdown-item" th:href="@{/contacts}">جهات الاتصال</a></li>
+                                <li><a class="dropdown-item" th:href="@{/mailbox}">صندوق البريد</a></li>
+                                <li class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" th:href="@{/index}">تسجيل الخروج</a></li>
+                            </ul>
+                        </div>
+                        <div class="logo-element">
+                            <a th:href="@{/Client/ajouterDossier}"><i class="fa fa-home"></i></a>
+                        </div>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/Client/ajouterDossier}"><i class="fa fa-plus"></i> <span class="nav-label">إضافة ملف جديد</span></a>
+                    </li>
+                    
+                    <li class="active">
+                        <a href="#"><i class="fa fa-gavel"></i> <span class="nav-label">الجلسات</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li class="active"><a th:href="@{/Client/seancesAujourdhui}">جلسات اليوم</a></li>
+                            <li><a th:href="@{/Client/prochainesSeances}">الجلسات المقبلة</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <a th:href="@{/Client/consulterDossier}"><i class="fa fa-book-open"></i> <span class="nav-label">إطِّلاع</span></a>
+                    </li>
+                    
+                    <li>
+                        <a th:href="@{/Client/rechercher}"><i class="fa fa-search"></i> <span class="nav-label">بحث</span></a>
+                    </li>
+                    
+                    <li>
+                        <a href="#"><i class="fa fa-globe-africa"></i> <span class="nav-label">خدمات أخرى</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                        	<li><a th:href="@{/typography}" >مكتبة قانونية</a></li>
+                            <li><a th:href="@{/icons}" >الصفحة الالكترونية</a></li>
+                            <li><a th:href="@{/draggable_panels}" >دليل المستخدم</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#"><i class="fa fa-database"></i> <span class="nav-label">قاعدة البيانات</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                        	<li><a th:href="@{/table_basic}" >استيراد</a></li>
+                            <li><a th:href="@{/table_data_tables}"  >تصدير</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="gray-bg">
+
+            <div class="row border-bottom">
+	            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+	                <div class="navbar-header">
+	                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+	                    <form role="search" class="navbar-form-custom" th:action="@{/Client/rechercher}">
+	                        <div class="form-group">
+	                            <input type="text" placeholder="ابحث عن شيء ما..." class="form-control" name="top-search" id="top-search">
+	                        </div>
+	                    </form>
+	                </div>
+	            
+	                <ul class="nav navbar-top-links navbar-right">
+	                
+	                    <li style="padding: 20px">
+	                        <span class="m-r-sm text-muted welcome-message" th:text="${user.email}"></span>
+	                    </li>
+	                    
+	                    <li class="dropdown">
+	                        <a class="dropdown-toggle count-info" data-toggle="dropdown" th:href="@{/Client/seancesAujourdhui}">
+	                            <i class="fa fa-bell"></i>  <span class="label label-primary" th:text="${nombreSeancesAujourdhui}">0</span>
+	                        </a>
+	                    </li>
+	                    
+	                    <li>
+	                        <a th:href="@{/logout}">
+	                            <i class="fa fa-sign-out"></i> خروج
+	                        </a>
+	                    </li>
+	                    
+	                </ul>
+	    
+	            </nav>
+	        </div>
+
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-10">
+                    <h2 style="text-align:right">جلسات اليوم</h2>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="index.html">الرئيسية</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a>الجلسات</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            <strong>جلسات اليوم</strong>
+                        </li>
+                    </ol>
+                </div>
+                <div class="col-lg-2">
+
+                </div>
+            </div>
+
+        <div class="wrapper wrapper-content animated fadeInRight">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox ">
+                        <div class="ibox-title">
+                            <h5>الجلسات المبرمجة لهذا اليوم</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <input type="text" class="form-control form-control-sm m-b-xs" id="filter"
+                                   placeholder="ابحث في القائمة ...">
+
+                            <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
+                                <thead>
+	                                <tr>
+	                                    <th>رقم الملف</th>
+	                                    <th>تاريخ الجلسة</th>
+	                                    <!--<th data-hide="phone,tablet">عدد الأيام المتبقية</th>-->
+	                                    <th data-hide="phone,tablet">المحكمة</th>
+	                                    <th data-hide="phone,tablet">الملاحظة</th>
+	                                </tr>
+                                </thead>
+                                <tbody>
+                                	<tr th:each="dossier:${dossiers}">
+                                		<td th:text="${dossier.numeroDossier}"></td>
+                                		<td th:text="${#dates.format(dossier.dateSeance, 'yyyy / MM / dd')}"></td>
+                                		<td th:text="${dossier.tribunal}"></td>
+                                		<td th:text="${dossier.commentaire}"></td>
+                                	</tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="5">
+                                        <ul class="pagination float-right"></ul>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                            <form th:action="@{Client/updateSeance}">
+                            	<div class="row">
+				        			<div class="col-md-4">
+				                        <label>تعديل الجلسة</label>
+				                        <input type="text" placeholder="رقم الملف" class="form-control" name="numero_seance" id="numero_seance" >
+		                            </div>
+				        		</div><br><br>
+				        		
+	                            <div class="row">
+				        			<div class="col-md-4">
+				        				<input type="checkbox" id="inputDateSeance" onchange="afficheDateSeance()">
+				                        <label>تأجيل الجلسة</label>
+				                        <input type="date" placeholder="تاريخ الجلسة" class="form-control" name="date_seance" id="date_seance"  disabled>
+		                            </div>
+		                            <div class="col-md-8">
+		                            	<input type="checkbox" id="inputRmqSeance" onchange="afficheRmqSeance()">
+		                            	<label>إضافة ملاحظة</label>
+		                            	<textarea class="form-control" name="rmq_seance" id="rmq_seance" rows="1" placeholder="لا يوجد ملاحظات"  disabled></textarea>
+		                            </div>
+				        		</div><br>
+				        		
+				        		<div class="row">
+	                                <div class="col-md-4" id="field_date_seance" style="visibility: hidden">
+	                                	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dateSeanceModal"  onclick="dateSeanceDayEvent(event);">تأجيل</button>
+	                                </div>
+	                                <div class="modal inmodal fade" id="dateSeanceModal" tabindex="-1" role="dialog"  aria-hidden="true">
+	                                    <div class="modal-dialog modal-sm">
+	                                    <div class="modal-content">
+	                                        <div class="modal-header">
+	                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	                                            <h4 class="modal-title">تأجيل الجلسة</h4>
+	                                        </div>
+	                                        <div class="modal-body" id="dateSeanceModalBody"></div>
+	                                        <div class="modal-footer" id="dateSeanceModalBtn">
+	                                            <a type="button" class="btn btn-primary" data-dismiss="" th:href="@{/Client/prochainesSeances}">حفظ</a>
+	                                        </div>
+	                                    </div>
+	                                    </div>
+	                                </div>
+	
+	                                <div class="col-md-4" id="field_rmq_seance" style="visibility: hidden">
+	                                	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rmqSeanceModal" onclick="rmqSeanceDayEvent(event);">إضافة الملاحظة</button>
+	                                </div>
+	                                <div class="modal inmodal fade" id="rmqSeanceModal" tabindex="-1" role="dialog"  aria-hidden="true">
+	                                    <div class="modal-dialog modal-sm">
+	                                    <div class="modal-content">
+	                                        <div class="modal-header">
+	                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	                                            <h4 class="modal-title">إضافة ملاحظة</h4>
+	                                        </div>
+	                                        <div class="modal-body" id="rmqSeanceModalBody"></div>
+	                                        <div class="modal-footer" id="rmqSeanceModalBtn">
+	                                            <a type="button" class="btn btn-primary" data-dismiss="" th:href="@{/Client/prochainesSeances}">حفظ</a>
+	                                        </div>
+	                                    </div>
+	                                    </div>
+	                                </div>
+	                            </div>
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+            <div class="footer">
+                <div class="float-right">
+                    <strong>إدارة حوادث السير</strong>
+                </div>
+                <div class="float-left">
+                    <strong>جميع الحقوق محفوظة</strong> &copy; 2020-2021
+                </div>
+            </div>
+
+        </div>
+        </div>
+
+
+
+    <!-- Mainly scripts -->
+    <script src="js1/jquery-3.1.1.min.js"></script>
+    <script src="js1/popper.min.js"></script>
+    <script src="js1/bootstrap1.js"></script>
+    <script src="js1/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js1/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- FooTable -->
+    <script src="js1/plugins/footable/footable.all.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js1/inspinia.js"></script>
+    <script src="js1/plugins/pace/pace.min.js"></script>
+
+    <!-- Page-Level Scripts -->
+    <script>
+        $(document).ready(function() {
+
+            $('.footable').footable();
+            $('.footable2').footable();
+
+        });
+
+    </script>
+    
+    <script>
+    function afficheDateSeance(){
+		if(document.getElementById('inputDateSeance').checked == true){
+			document.getElementById('date_seance').disabled=false;
+			document.getElementById('field_date_seance').style.visibility='visible';
+		}else{
+			document.getElementById('date_seance').disabled=true;
+			document.getElementById('field_date_seance').style.visibility='hidden';
+		}
+	}
+    
+    function afficheRmqSeance(){
+		if(document.getElementById('inputRmqSeance').checked == true){
+			document.getElementById('rmq_seance').disabled=false;
+			document.getElementById('field_rmq_seance').style.visibility='visible';
+		}else{
+			document.getElementById('rmq_seance').disabled=true;
+			document.getElementById('field_rmq_seance').style.visibility='hidden';
+		}
+	}
+    
+    </script>
+    <script type="text/javascript" src="js1/api/prochainesSeancesAjax.js"></script>
+
+</body>
+
+</html>

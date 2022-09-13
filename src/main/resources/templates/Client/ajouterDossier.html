@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>إدارة الحوادث • إضافة ملف</title>
+<base href="/" />
+<link href="css1/bootstrap.min1.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+<link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+<link href="css1/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="css1/plugins/steps/jquery.steps.css" rel="stylesheet">
+<link href="css1/animate1.css" rel="stylesheet">
+<link href="css1/style1.css" rel="stylesheet">
+<link href="css1/plugins/bootstrap-rtl/bootstrap-rtl.min.css" rel="stylesheet">
+<link rel="icon" type="image/png" href="img1/law-favicon.svg">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<!-- FooTable -->
+<link href="css1/plugins/footable/footable.core.css" rel="stylesheet">
+<style>
+.wizard>.steps>ul>li, .wizard>.actions>ul>li {
+	float: right;
+}
+.obligatoire{
+	color:red ;
+}
+
+.field_form>.col-sm-12>.row {
+	padding-top: 10px;
+}
+</style>
+<style type="text/css">
+@import
+	url('https://fonts.googleapis.com/earlyaccess/droidarabickufi.css');
+
+* {
+	font-family: 'Droid Arabic Kufi';
+}
+
+select.form-control:not([size]):not([multiple]) {
+	height: calc(59% - 12px);
+}
+
+.close-modal{
+	margin: 20px;
+	
+}
+
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: right;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 25px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+#tab1{
+display:block
+}
+.tab{
+	border-radius: 12px 12px 0 0;
+}
+
+</style>
+
+<!-- Remember to include jQuery :) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+
+<!-- jQuery Modal -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+
+</head>
+
+<body class="rtls">
+
+	<div id="wrapper">
+
+		<nav class="navbar-default navbar-static-side" role="navigation">
+			<div class="sidebar-collapse">
+				<ul class="nav metismenu" id="side-menu">
+
+					<li class="nav-header">
+						<div class="dropdown profile-element">
+							<a th:href="@{/Client/index}"><img alt="image"
+								class="rounded-circle" src="img1/justice-green.png" width="120" /></a>
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#"
+								th:object="${user}"> <span class="block m-t-xs font-bold"
+								th:text="${user.firstName}+' '+${user.lastName}">Unknown</span>
+								<span class="text-muted text-xs block">محامي<b
+									class="caret"></b></span>
+							</a>
+							
+							<input type="text" id="logged_in_user" th:value="${user.id}" style="display: none">
+							
+							<ul class="dropdown-menu animated fadeInRight m-t-xs">
+								<li><a class="dropdown-item" th:href="@{/profile}">الصفحة
+										الشخصية</a></li>
+								<li><a class="dropdown-item" th:href="@{/contacts}">جهات
+										الاتصال</a></li>
+								<li><a class="dropdown-item" th:href="@{/mailbox}">صندوق
+										البريد</a></li>
+								<li class="dropdown-divider"></li>
+								<li><a class="dropdown-item" th:href="@{/index}">تسجيل
+										الخروج</a></li>
+							</ul>
+						</div>
+						<div class="logo-element">
+							<a th:href="@{/Client/ajouterDossier}"><i class="fa fa-home"></i></a>
+						</div>
+					</li>
+
+					<li class="active"><a th:href="@{/Client/ajouterDossier}"><i
+							class="fa fa-plus"></i> <span class="nav-label">إضافة ملف
+								جديد</span></a></li>
+
+					<li><a href="#"><i class="fa fa-gavel"></i> <span
+							class="nav-label">الجلسات</span><span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level collapse">
+							<li><a th:href="@{/Client/seancesAujourdhui}">جلسات
+									اليوم</a></li>
+							<li><a th:href="@{/Client/prochainesSeances}">الجلسات
+									المقبلة</a></li>
+						</ul></li>
+
+					<li><a th:href="@{/Client/consulterDossier}"><i
+							class="fa fa-book-open"></i> <span class="nav-label">إطِّلاع</span></a>
+					</li>
+
+					<li><a th:href="@{/Client/rechercher}"><i
+							class="fa fa-search"></i> <span class="nav-label">بحث</span></a></li>
+
+					<li><a href="#"><i class="fa fa-globe-africa"></i> <span
+							class="nav-label">خدمات أخرى</span><span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level collapse">
+							<li><a th:href="@{/typography}">مكتبة قانونية</a></li>
+							<li><a th:href="@{/icons}">الصفحة الالكترونية</a></li>
+							<li><a th:href="@{/draggable_panels}">دليل المستخدم</a></li>
+						</ul></li>
+
+					<li><a href="#"><i class="fa fa-database"></i> <span
+							class="nav-label">قاعدة البيانات</span><span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level collapse">
+							<li><a th:href="@{/table_basic}">استيراد</a></li>
+							<li><a th:href="@{/table_data_tables}">تصدير</a></li>
+						</ul></li>
+				</ul>
+
+			</div>
+		</nav>
+
+		<div id="page-wrapper" class="gray-bg">
+
+			<div class="row border-bottom">
+				<nav class="navbar navbar-static-top" role="navigation"
+					style="margin-bottom: 0">
+					<div class="navbar-header">
+						<a class="navbar-minimalize minimalize-styl-2 btn btn-primary "
+							href="#"><i class="fa fa-bars"></i> </a>
+						<form role="search" class="navbar-form-custom"
+							th:action="@{/Client/rechercher}">
+							<div class="form-group">
+								<input type="text" placeholder="ابحث عن شيء ما..."
+									class="form-control" name="top-search" id="top-search">
+							</div>
+						</form>
+					</div>
+
+					<ul class="nav navbar-top-links navbar-right">
+
+						<li style="padding: 20px"><span
+							class="m-r-sm text-muted welcome-message" th:text="${user.email}"></span>
+						</li>
+
+						<li class="dropdown"><a class="dropdown-toggle count-info"
+							data-toggle="dropdown" th:href="@{/Client/seancesAujourdhui}">
+								<i class="fa fa-bell"></i> <span class="label label-primary"
+								th:text="${nombreSeancesAujourdhui}">0</span>
+						</a></li>
+
+						<li><a th:href="@{/logout}"> <i class="fa fa-sign-out"></i>
+								خروج
+						</a></li>
+
+					</ul>
+
+				</nav>
+			</div>
+			<div class="row wrapper border-bottom white-bg page-heading">
+				<div class="col-lg-10">
+					<h2>ملف جديد</h2>
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="/Client/index.html">الرئيسية</a>
+						</li>
+						<li class="breadcrumb-item active"><strong>ملف جديد</strong>
+						</li>
+					</ol>
+				</div>
+				<div class="col-lg-2"></div>
+			</div>
+			<div class="wrapper wrapper-content animated fadeInRight">
+
+
+				<div class="row" style="text-align: right">
+					<div class="col-lg-12">
+						<div class="ibox">
+
+							<div class="ibox-content">
+								<h2>إنشاء ملف جديد</h2>
+								<h3 id="numero_dossier"></h3>
+								<p>المرجو الادلاء بجميع المعلومات الخاصة بالملف</p>
+
+								<form id="form" action="#" method="post" class="wizard-big">
+
+									<h1>الملف</h1>
+									<fieldset>
+										<div class="field_form" id="field_dossier"
+											style="display: block">
+											<h2>معلومات عن الملف</h2>
+											<div class="col-sm-12">
+												<div class="row">
+													<div class="col-md-4">
+														<label>ما نوع المحكمة؟</label> <select
+															class="form-control m-b" name="type_tribunal"
+															id="type_tribunal" onChange="checkTypeTribunal()">
+															<option value="PREMIERE_INSTANCE" selected>إبتدائية</option>
+															<option value="COUR_APPEL">استئناف</option>
+														</select>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-4">
+														<label>محكمة الإستئناف:</label> <select
+															class="form-control m-b" name="cour_appel"
+															id="cour_appel" onchange="loadTribunalInfos(event);">
+															<option disabled selected>اختر محكمة استئناف</option>
+															<option th:each="courAppel : ${courAppels}"
+																th:value="${courAppel.id}" th:text="${courAppel.nom}"></option>
+														</select>
+													</div>
+
+													<div class="col-md-4">
+														<label>المحكمة الإبتدائية:</label> <select
+															class="form-control m-b"
+															name="tribunal_premiere_instance"
+															id="tribunal_premiere_instance"
+															onchange="loadJugesAjax(event);">
+															<option disabled selected>اختر محكمة ابتدائية</option>
+														</select>
+													</div>
+
+													<div class="col-md-4">
+														<label>القاضي:</label> <select class="form-control m-b"
+															name="liste_juges" id="liste_juges">
+															<option disabled selected>اختر القاضي</option>
+														</select>
+													</div>
+
+
+												</div>
+
+												<div class="row">
+
+													<div class="col-md-4">
+														<label>تاريخ الحادث</label> <input type="date"
+															placeholder="تاريخ الحادث" class="form-control"
+															name="date_accident" id="date_accident">
+													</div>
+
+													<div class="col-md-4">
+														<label>تاريخ الملف</label> <input type="date"
+															placeholder="تاريخ الملف" class="form-control"
+															name="date_dossier" id="date_dossier">
+													</div>
+
+													<div class="col-md-4">
+														<label>تاريخ الجلسة</label> <input type="date"
+															placeholder="تاريخ الجلسة" class="form-control"
+															name="date_session" id="date_session">
+													</div>
+
+												</div>
+												<br>
+
+												<div class="row">
+													<div class="col-md-4">
+														<label>رقم الملف:</label> <input type="text"
+															placeholder="الرقم" class="form-control"
+															name="numero_dossier_2" id="numero_dossier_2">
+													</div>
+
+													<div class="col-md-4">
+														<label>المرجع الوطني:</label> <input type="text"
+															placeholder="المرجع الوطني" class="form-control"
+															name="numero_national" id="numero_national">
+													</div>
+
+													<div class="col-md-4">
+														<br>
+														<button type="button" class="btn btn-primary"
+															data-toggle="modal" data-target="#dossierModal"
+															onclick="addFolderEvent(event);">إضافة الملف</button>
+														<div class="modal inmodal fade" id="dossierModal"
+															tabindex="-1" role="dialog" aria-hidden="true">
+															<div class="modal-dialog modal-sm">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		<button type="button" class="close"
+																			data-dismiss="modal">
+																			<span aria-hidden="true">&times;</span><span
+																				class="sr-only">Close</span>
+																		</button>
+																		<h4 class="modal-title">الملف</h4>
+																	</div>
+																	<div class="modal-body" id="dossierModalBody"></div>
+																	<div class="modal-footer" id="dossierModalBtn">
+																		<button type="button" class="btn btn-white"
+																			data-dismiss="modal">غلق</button>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+
+												</div>
+											</div>
+										</div>
+
+									</fieldset>
+
+									<h1>الضحايا</h1>
+									<fieldset>
+
+										<div class="victime_tabs">
+											<div class="panel-body">
+												<div class="panel-group" id="accordion">
+
+													<div class="panel panel-default">
+														<div class="panel-heading">
+															<h5 class="panel-title">
+																<a data-toggle="collapse" data-parent="#accordion"
+																	href="#collapseOne">1 - معلومات الضحية</a>
+															</h5>
+														</div>
+														<div id="collapseOne" class="panel-collapse collapse in">
+															<div class="panel-body">
+																<div class="field_form" id="liste_victime"
+																	style="display: block">
+																	<div class="row">
+																		<div class="col-md-5">
+																			<label>إسم الضحية:</label> <select
+																				class="form-control m-b" name="liste_victimes"
+																				id="liste_victimes">
+																				<option disabled selected>اختر الضحية</option>
+																				<option th:each="victime : ${victimes}"
+																					th:value="${victime.getId()}"
+																					th:text="${victime.getPrenom()} + ' ' + ${victime.getNom()}"></option>
+																			</select>
+																		</div>
+																		<div class="col-md-2"></div>
+																		<div class="col-md-5">
+																			<label class="">الضحية ليس في القائمة؟</label><br>
+																			<input type="checkbox" name="check_victime"
+																				id="check_victime" onchange="afficheVictimeInput()"><span>
+																				إضافة ضحية </span>
+																		</div>
+
+																	</div>
+																</div>
+
+																<div class="field_form" id="field_victime"
+																	style="display: none">
+																	<br>
+																	<h3>إضافة ضحية</h3>
+																	<div class="row">
+																		<div class="col-md-4">
+																			<label>رقم البطاقة الوطنية:</label><input type="text"
+																				placeholder="" class="form-control"
+																				name="cni_victime" id="cni_victime">
+																		</div>
+																		<div class="col-md-4">
+																			<label class="obligatoire">الإسم:</label><input  type="text"
+																				placeholder="" class="form-control"
+																				name="prenom_victime" id="prenom_victime" required>
+																		</div>
+																		<div class="col-md-4">
+																			<label class="obligatoire">النسب:</label><input type="text"
+																				placeholder="" class="form-control"
+																				name="nom_victime" id="nom_victime" required>
+																		</div>
+																	</div>
+
+																	<div class="row">
+																		<div class="col-md-4">
+																			<label>الوضع الإجتماعي:</label> <select
+																				class="form-control m-b" name="etat_social_victime"
+																				id="etat_social_victime"
+																				onchange="nombreEnfantsVictime()">
+																				<option>متزوج</option>
+																				<option>عازب</option>
+																				<option>مطلق</option>
+																				<option>أرمل</option>
+																			</select>
+																		</div>
+																		<div class="col-md-4">
+																			<label>عدد أطفال الضحية:</label> <input type="number"
+																				value="1" class="form-control"
+																				name="nombre_enfants_victime"
+																				id="nombre_enfants_victime">
+																		</div>
+																		
+																		<div class="col-md-4">
+																			<label class="obligatoire">تاريخ الإزدياد:</label><input type="date"
+																				placeholder="" class="form-control"
+																				name="date_naissance_victime"
+																				id="date_naissance_victime" required>
+																		</div>
+																	</div>
+
+																	<div class="row">
+																		<div class="col-md-4">
+																			<label class="obligatoire">الوظيفة:</label> 
+																			<select 
+																				class="form-control m-b" name="job_victime"
+																				id="job_victime" required onchange="toggleFields(event);">
+																				<option>بدون</option>
+																				<option>تلميذ في الثانوي أو في التأهيل المهني</option>
+																				<option>طالب بالسلك 1 أو 2</option>
+																				<option>طالب بالسلك 3</option>
+																				<option>وظيفة أخرى</option>
+																			</select>
+																		</div>
+																		<div class="col-md-4">
+																			<label>وظيفة أخرى:</label><input type="text"
+																				placeholder="" class="form-control"
+																				name="salaire_annuel_victime"
+																				id="autre_profession_victime" disabled>
+																		</div>
+																		<div class="col-md-4">
+																			<label>الدخل السنوي:</label><input type="number"
+																				placeholder="" class="form-control"
+																				name="salaire_annuel_victime"
+																				id="salaire_annuel_victime" value='00.00' disabled>
+																		</div>
+																	</div>
+
+																	<div class="row">
+																		<div class="col-md-6">
+																			<label>مكان الإزدياد:</label><input type="text"
+																				placeholder="" class="form-control"
+																				name="lieu_naissance_victime"
+																				id="lieu_naissance_victime">
+																		</div>
+																		<div class="col-md-6">
+																			<label>الجنس:</label>
+																			<div class="row">
+																				<div class="col-md-4"></div>
+																				<div class="col-md-4">
+																					<label class="radio-inline"><input
+																						type="radio" class="sexe_victime"
+																						name="sexe_victime" value="ذكر" checked>ذكر</label>
+																				</div>
+																				<div class="col-md-4">
+																					<label class="radio-inline"><input
+																						type="radio" class="sexe_victime"
+																						name="sexe_victime" value="أنثى">أنثى</label>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+
+																	<div class="row">
+																		<div class="col-md-6">
+																			<label>إسم الأب:</label><input type="text"
+																				placeholder="" class="form-control"
+																				name="pere_victime" id="pere_victime">
+																		</div>
+																		<div class="col-md-6">
+																			<label>إسم الأم:</label><input type="text"
+																				placeholder="" class="form-control"
+																				name="mere_victime" id="mere_victime">
+																		</div>
+																	</div>
+
+																	<div class="row">
+																		<div class="col-md-12">
+																			<label>العنوان:</label><input type="text"
+																				placeholder="" class="form-control"
+																				name="addresse_victime" id="addresse_victime">
+																		</div>
+																	</div>
+																	<div class="row">
+																		<div class="col-md-12">
+																			<label>المبلغ المطلوب:</label><input type="number"
+																				placeholder="" class="form-control"
+																				name="addresse_victime" id="montantDemande">
+																		</div>
+																	</div>
+																</div>
+
+																<div class="row">
+																	<div class="col-md-6"></div>
+																	<div class="col-md-6">
+																		<br>
+																		<div class="col-md-4"></div>
+																		<div class="col-md-4">
+																			<button type="button" class="btn btn-primary"
+																				data-toggle="modal" data-target="#victimeModal"
+																				onclick="addVictimeEvent(event);">إضافة
+																				الضحية</button>
+																		</div>
+																		<div class="modal inmodal fade" id="victimeModal"
+																			tabindex="-1" role="dialog" aria-hidden="true">
+																			<div class="modal-dialog modal-sm">
+																				<div class="modal-content">
+																					<div class="modal-header">
+																						<button type="button" class="close"
+																							data-dismiss="modal">
+																							<span aria-hidden="true">&times;</span><span
+																								class="sr-only">Close</span>
+																						</button>
+																						<h4 class="modal-title">الضحية</h4>
+																					</div>
+																					<div class="modal-body" id="victimeModalBody"></div>
+																					<div class="modal-footer" id="victimeModalBtn">
+																						<button type="button" class="btn btn-white"
+																							data-dismiss="modal">غلق</button>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-4"></div>
+																	</div>
+
+																</div>
+															</div>
+														</div>
+													</div>
+
+													<div class="panel panel-default">
+														<div class="panel-heading">
+															<h4 class="panel-title">
+																<a data-toggle="collapse" data-parent="#accordion"
+																	href="#collapseTwo" id="etatVictime">2 - وضعية
+																	الضحية</a>
+															</h4>
+														</div>
+														<div id="collapseTwo" class="panel-collapse collapse">
+															<div class="panel-body">
+																<div class="row">
+																	<div class="col-md-6">
+																		<label>الحالة:</label>
+																		<div class="row">
+																		
+																			<div class="col-md-4">
+																				<label class="radio-inline"><input
+																					type="radio" class="etat_victime"
+																					name="etat_victime" value="حي"
+																					onchange="toggleAddDawiBtn(false); updateEtatVictime(event);"
+																					id="inputVive" checked>حي</label>
+																			</div>
+																		
+																			
+																			
+																			<div class="col-md-4">
+																				<label class="radio-inline" >
+																				<input
+																					type="radio" class="etat_victime"
+																					name="etat_victime" value="ميت"
+																					onchange="toggleAddDawiBtn(true); updateEtatVictime(event);"
+																					id="inputMort">ميت</label>
+																			</div>
+																		</div>
+																	</div>
+																</div><br>
+																
+							<!-- Modal HTML embedded directly into document -->
+																
+																<div id="ex1" class="modal" style="min-width: 60%; min-height:35em; padding: 50px;">
+																 <div class="tab">
+																	  <button class="tablinks active" onclick="openTab(event, 'tab1')">ذوي حقوق جديد</button>
+																	  <button class="tablinks" onclick="openTab(event, 'tab2')">قائمة ذوي الحقوق</button>
+																 </div>
+																<div id="tab1" class="tabcontent"> 
+																<div class="field_form" id="field_dawi_show">
+																<h3><a id="addDawiTittle">إضافة ذي حقوق جديد</a></h3>
+																	<div class="row"  style="margin-top: 10px;">
+																		<div class="col-md-6">
+																			<label>القرابة:</label> 
+																			<select onclick="verifyRelationship(e);"
+																				class="form-control m-b" name="relation_dawi"
+																				id="relation_dawi">
+																				<option disabled selected>حدد نوع القرابة</option>
+																				<option>الزوجة</option>
+																				<option>الزوج</option>
+																				<option>الأب</option>
+																				<option>الأم</option>
+																				<option>الإبن</option>
+																				<option>البنت</option>
+																				<option>الفرع المصاب بعاهة بدنية أو عقلية لا يستطيع معها القيام بسد حاجاته</option>
+																				<option>ملزما بالنفقة عليهم</option>
+																				<option>يعولهم دون أن يكون ملزما بالنفقة عليهم</option>
+																			</select>
+																			<br>
+																		</div>
+
+																	</div>
+																	<div class="field_form" id="liste_dawi"
+																		style="display: block">
+																		<div class="row">
+																		<div class="field_form" id="field_dawi" >
+
+
+																		<div class="row">
+																			<div class="col-md-4">
+																				<label>رقم البطاقة الوطنية:</label><input
+																					type="text" placeholder="" class="form-control"
+																					name="cni_famille_victime" id="cni_famille_victime">
+																			</div>
+																			<div class="col-md-4">
+																				<label>الإسم:</label><input type="text"
+																					placeholder="" class="form-control"
+																					name="prenom_famille_victime"
+																					id="prenom_famille_victime">
+																			</div>
+																			<div class="col-md-4">
+																				<label>النسب:</label><input type="text"
+																					placeholder="" class="form-control"
+																					name="nomfam_famille_victime"
+																					id="nomfam_famille_victime">
+																			</div>
+																		</div>
+
+																		<div class="row">
+																			<div class="col-md-4">
+																				<label>تاريخ الإزدياد:</label><input type="date"
+																					placeholder="" class="form-control"
+																					name="naissance_famille_victime"
+																					id="naissance_famille_victime">
+																			</div>
+																			<div class="col-md-4">
+																				<label>الوضع الإجتماعي:</label> <select
+																					class="form-control m-b"
+																					name="etat_sociale_famille_victime"
+																					id="etat_sociale_famille_victime">
+																					<option>عازب</option>
+																					<option>متزوج</option>
+																					<option>مطلق</option>
+																				</select>
+																			</div>
+																			<div class="col-md-4">
+																				<label>الوظيفة:</label> <select
+																					class="form-control m-b" name="job_famille_victime"
+																					id="job_famille_victime">
+																					<option>بدون</option>
+																					<option>يتابع دراسته</option>
+																					<option>وظيفة أخرى</option>
+																				</select>
+																			</div>
+																		</div>
+
+																		<div class="row">
+																			<div class="col-md-12">
+																				<label>العنوان:</label><input type="text"
+																					placeholder="" class="form-control"
+																					name="addresse_famille_victime"
+																					id="addresse_famille_victime">
+																			</div>
+																		</div>
+																		<br>
+
+																	</div>
+																		<!--  
+																			<div class="col-md-5">
+																				<label>إسم ذي الحقوق:</label> <select
+																					class="form-control m-b" name="liste_dawis"
+																					id="liste_dawis">
+																					<option disabled selected>اختر ذي حقوق</option>
+																					<option th:each="dawi : ${dawis}"
+																						th:value="${dawi.getId()}"
+																						th:text="${dawi.getPrenom()} + ' ' + ${dawi.getNom()}"></option>
+																				</select>
+																			</div>
+																		-->
+																			<div class="col-md-6">
+																			<label>الحق في التعويض:</label>
+																			<div class="row">
+																				<div class="col-md-4"></div>
+																				<div class="col-md-4">
+																					<label class="radio-inline"><input
+																						type="radio" class="droit_compensation"
+																						name="droit_compensation" value="نعم" checked> نعم</label>
+																				</div>
+																				<div class="col-md-4">
+																					<label class="radio-inline"><input
+																						type="radio" class="droit_compensation"
+																						name="droit_compensation" value="لا"> لا</label>
+																				</div>
+																			</div>
+																		</div>
+																		<!-- 
+																			<div class="col-md-5">
+																				<label class="">ذي الحقوق ليس في القائمة؟</label><br>
+																				<input type="checkbox" name="check_dawi"
+																					id="check_dawi" onchange="afficheDawiInput()"><span>
+																					إضافة ذي الحقوق </span>
+																			</div><br>
+ 																		-->
+																		</div>
+																	</div>
+																	<br>
+																	
+														<div class="row">
+																		<div class="col-md-6"></div>
+																		<div class="col-md-6">
+																			<br>
+																			<div class="col-md-4"></div>
+																			<div class="col-md-4">
+																				<button type="button" class="btn btn-primary"
+																					data-toggle="modal" data-target="#dawiModalDiv"
+																					onclick="addDawiEvent(event);">إضافة
+																					ذي الحقوق</button>
+																			</div>
+																			
+																			<div class="col-md-4"></div>
+																		</div>
+
+																	</div>
+																</div>
+																</div>
+																
+																<div id="tab2" class="tabcontent">
+																  
+																<table
+																	class="footable table table-stripped toggle-arrow-tiny"
+																	data-page-size="10">
+																	<thead>
+																		<tr>
+
+																			<th>القرابة</th>
+																			<th>ب.و.ت</th>
+																			<th data-hide="phone">الإسم</th>
+																			<th data-hide="phone">النسب</th>
+																			<th data-hide="phone">الوظيفة</th>
+																			<th data-hide="phone">تاريخ الإزدياد</th>
+																			<th data-hide="phone" class="text-right">الإعدادات</th>
+
+																		</tr>
+																	</thead>
+																	<tbody id="table_dawi_body"></tbody>
+																	
+																</table>
+																</div>
+																</div>
+																
+																<!-- Message box dawi -->
+																<div class="modal inmodal fade" id="dawiModalDiv" tabindex="-1" role="dialog" aria-hidden="true" style="min-height: 40em; min-width: 100%; box-shadow:0 0 0;">
+																				<div class="modal-dialog modal-sm inmodal fade " role="dialog" aria-hidden="true" tabindex="-1">
+																					<div class="modal-content">
+																						<div class="modal-header">
+																							<button type="button" class="close"
+																								data-dismiss="modal">
+																								<span aria-hidden="true">&times;</span><span
+																									class="sr-only">Close</span>
+																							</button>
+																						</div>
+																						<div class="modal-body" id="dawiModalBody"></div>
+																						<div class="modal-footer" id="dawiModalBtn">
+																							<button type="button" class="btn btn-white"
+																								data-dismiss="modal">غلق</button>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																<!-- Link to open the modal -->
+																<p style="display: none;" id ="addDawiBtn"><a href="#ex1" rel="modal:open">أدخل ذوي الحقوق</a></p>
+																
+							<!-- form dawi emplacement -->
+							
+															</div>
+														</div>
+													</div>
+
+													<div class="panel panel-default">
+														<div class="panel-heading">
+															<h4 class="panel-title">
+																<a data-toggle="collapse" data-parent="#accordion"
+																	href="#collapseThree" id="avocatVictime">3 - محامي
+																	الضحية</a>
+															</h4>
+														</div>
+														<div id="collapseThree" class="panel-collapse collapse">
+															<div class="panel-body">
+
+																<div class="field_form" id="liste_avocat_victime"
+																	style="display: block">
+																	<div class="row">
+																		<div class="col-md-5">
+																			<label>إسم المحامي:</label> <select
+																				class="form-control m-b"
+																				name="liste_avocats_victime"
+																				id="liste_avocats_victime">
+																				<option disabled selected>اختر المحامي</option>
+																				<option th:each="avocat : ${avocats}"
+																					th:value="${avocat.getCin()}"
+																					th:text="${avocat.getPrenom()} + ' ' + ${avocat.getNom()}"></option>
+																			</select>
+																		</div>
+																		<div class="col-md-2"></div>
+																		<div class="col-md-5">
+																			<label class="">المحامي ليس في القائمة؟</label><br>
+																			<input type="checkbox" name="check_avocat_victime"
+																				id="check_avocat_victime"
+																				onchange="afficheAvocatVictimeInput()"><span>
+																				إضافة المحامي </span>
+																		</div>
+
+																	</div>
+																</div>
+
+																<div class="field_form" id="field_avocat_victime"
+																	style="display: none">
+																	<div class="col-sm-12">
+																		<h3>إضافة محامي</h3>
+																		<div class="row">
+																			<div class="col-md-4">
+																				<label>رقم البطاقة الوطنية:</label><input
+																					type="text" placeholder="" class="form-control"
+																					name="cni_avocat_victime" id="cni_avocat_victime">
+																			</div>
+																			<div class="col-md-4">
+																				<label>الإسم:</label><input type="text"
+																					placeholder="" class="form-control"
+																					name="prenom_avocat_victime"
+																					id="prenom_avocat_victime">
+																			</div>
+																			<div class="col-md-4">
+																				<label>النسب:</label><input type="text"
+																					placeholder="" class="form-control"
+																					name="nom_avocat_victime" id="nom_avocat_victime">
+																			</div>
+																		</div>
+																		<div class="row">
+																			<div class="col-md-4">
+																				<label>الهيئة:</label> <select
+																					class="form-control m-b" name="barreau_victime"
+																					id="barreau_victime">
+																					<option disabled selected>اختر الهيئة</option>
+																					<option th:each="barreau : ${barreaux}"
+																						th:value="${barreau.idBarreau}"
+																						th:text="${barreau.nomBarreau}"></option>
+																				</select>
+																			</div>
+																			<div class="col-md-8">
+																				<label>العنوان:</label><input type="text"
+																					placeholder="" class="form-control"
+																					name="addresse_avocat_victime"
+																					id="addresse_avocat_victime">
+																			</div>
+																		</div>
+
+
+																	</div>
+																	<br> <br>.
+																</div>
+																<div class="row">
+																	<div class="col-md-6"></div>
+																	<div class="col-md-6">
+																		<br>
+																		<div class="col-md-4"></div>
+																		<div class="col-md-4">
+																			<button type="button" class="btn btn-primary"
+																				data-toggle="modal"
+																				data-target="#avocatVictimeModal"
+																				onclick="addAvocatVictimeEvent(event);">إضافة
+																				المحامي</button>
+																		</div>
+																		<div class="modal inmodal fade"
+																			id="avocatVictimeModal" tabindex="-1" role="dialog"
+																			aria-hidden="true">
+																			<div class="modal-dialog modal-sm">
+																				<div class="modal-content">
+																					<div class="modal-header">
+																						<button type="button" class="close"
+																							data-dismiss="modal">
+																							<span aria-hidden="true">&times;</span><span
+																								class="sr-only">Close</span>
+																						</button>
+																						<h4 class="modal-title">محامي الضحية</h4>
+																					</div>
+																					<div class="modal-body" id="avocatVictimeModalBody"></div>
+																					<div class="modal-footer"
+																						id="avocatVictimeModalBtn">
+																						<button type="button" class="btn btn-white"
+																							data-dismiss="modal">غلق</button>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-4"></div>
+																	</div>
+
+																</div>
+															</div>
+														</div>
+													</div>
+
+												</div>
+											</div>
+
+										</div>
+
+
+										<div class="field_form" id="field_table_victime"
+											style="display: block">
+											<br> <br>
+											<h2>قائمة الضحايا</h2>
+											<div class="col-sm-12">
+												<div class="row">
+													<div class="col-lg-12">
+														<div class="ibox">
+															<div class="ibox-content">
+
+																<table
+																	class="footable table table-stripped toggle-arrow-tiny"
+																	data-page-size="10">
+																	<thead>
+																		<tr>
+
+																			<th>ب.و.ت</th>
+																			<th data-hide="phone">الإسم</th>
+																			<th data-hide="phone">النسب</th>
+																			<th data-hide="phone">الوظيفة</th>
+																			<th data-hide="phone">عدد ذوي الحقوق</th>
+																			<th data-hide="phone" class="text-right">الإعدادات</th>
+
+																		</tr>
+																	</thead>
+																	<tbody id="table_victime_body"></tbody>
+																	<tfoot>
+																		<!--<tr>
+								                                    <td colspan="7">
+								                                        <ul class="pagination float-right"></ul>
+								                                    </td>
+								                                </tr>-->
+																	</tfoot>
+																</table>
+
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</fieldset>
+
+									<h1>المتهمين</h1>
+									<fieldset>
+
+										<div class="accuse_tabs">
+											<div class="panel-body">
+												<div class="panel-group" id="accordion">
+
+													<div class="panel panel-default">
+														<div class="panel-heading">
+															<h5 class="panel-title">
+																<a data-toggle="collapse" data-parent="#accordion"
+																	href="#collapseFour">1 - معلومات المتهم</a>
+															</h5>
+														</div>
+														<div id="collapseFour" class="panel-collapse collapse in">
+															<div class="panel-body">
+																<div class="field_form" id="liste_accuse"
+																	style="display: block">
+																	<div class="row">
+																		<div class="col-md-5">
+																			<label>إسم المتهم:</label> <select
+																				class="form-control m-b" name="liste_accuses"
+																				id="liste_accuses">
+																				<option disabled selected>اختر متهم</option>
+																				<option th:each="accuse : ${accuses}"
+																					th:value="${accuse.getId()}"
+																					th:text="${accuse.getPrenom()} + ' ' + ${accuse.getNom()}"></option>
+																			</select>
+																		</div>
+																		<div class="col-md-2"></div>
+																		<div class="col-md-5">
+																			<label class="">المتهم ليس في القائمة؟</label><br>
+																			<input type="checkbox" name="check_accuse"
+																				id="check_accuse" onchange="afficheAccuseInput()"><span>
+																				إضافة متهم </span>
+																		</div>
+
+																	</div>
+																</div>
+																<div class="field_form" id="field_accuse"
+																	style="display: none">
+																	<br>
+																	<h3>إضافة ضحية</h3>
+																	<div class="row">
+																		<div class="col-md-4">
+																			<label>رقم البطاقة الوطنية:</label><input type="text"
+																				placeholder="" class="form-control"
+																				name="cni_accuse" id="cni_accuse">
+																		</div>
+																		<div class="col-md-4">
+																			<label>الإسم:</label><input type="text"
+																				placeholder="" class="form-control"
+																				name="prenom_accuse" id="prenom_accuse">
+																		</div>
+																		<div class="col-md-4">
+																			<label>النسب:</label><input type="text"
+																				placeholder="" class="form-control"
+																				name="nom_accuse" id="nom_accuse">
+																		</div>
+																	</div>
+
+																	<div class="row">
+																		<div class="col-md-4">
+																			<label>الوضع الإجتماعي:</label> <select
+																				class="form-control m-b" name="etat_social_accuse"
+																				id="etat_social_accuse"
+																				onchange="nombreEnfantsAccuse()">
+																				<option>متزوج</option>
+																				<option>عازب</option>
+																				<option>مطلق</option>
+																				<option>أرمل</option>
+																			</select>
+																		</div>
+																		<div class="col-md-4">
+																			<label>عدد أطفال المتهم:</label> <input type="text"
+																				value="1" class="form-control"
+																				name="nombre_enfants_accuse"
+																				id="nombre_enfants_accuse">
+																		</div>
+																		<div class="col-md-4">
+																			<label>شركة التأمين:</label> <select
+																				class="form-control m-b" name="assurance_accuse"
+																				id="assurance_accuse">
+																				<option disabled selected>اختر التأمين</option>
+																				<option th:each="assurance : ${assurances}"
+																					th:value="${assurance.idAssurance}"
+																					th:text="${assurance.nomAssurance}"></option>
+																			</select>
+																		</div>
+																	</div>
+
+																	<div class="row">
+																		<div class="col-md-6">
+																			<label>تاريخ الإزدياد:</label><input type="date"
+																				placeholder="" class="form-control"
+																				name="date_naissance_accuse"
+																				id="date_naissance_accuse">
+																		</div>
+																		<div class="col-md-6">
+																			<label>الوظيفة:</label> <select
+																				class="form-control m-b" name="job_accuse"
+																				id="job_accuse">
+																				<option>أستاذ</option>
+																				<option>موظف</option>
+																				<option>تاجر</option>
+																				<option>أجير</option>
+																			</select>
+																		</div>
+																	</div>
+
+																	<div class="row">
+																		<div class="col-md-6">
+																			<label>مكان الإزدياد:</label><input type="text"
+																				placeholder="" class="form-control"
+																				name="lieu_naissance_accuse"
+																				id="lieu_naissance_accuse">
+																		</div>
+																		<div class="col-md-6">
+																			<label>الجنس:</label>
+																			<div class="row">
+																				<div class="col-md-4"></div>
+																				<div class="col-md-4">
+																					<label class="radio-inline"><input
+																						type="radio" class="sexe_accuse"
+																						name="sexe_accuse" value="ذكر" checked>ذكر</label>
+																				</div>
+																				<div class="col-md-4">
+																					<label class="radio-inline"><input
+																						type="radio" class="sexe_accuse"
+																						name="sexe_accuse" value="أنثى">أنثى</label>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+
+																	<div class="row">
+																		<div class="col-md-6">
+																			<label>إسم الأب:</label><input type="text"
+																				placeholder="" class="form-control"
+																				name="pere_accuse" id="pere_accuse">
+																		</div>
+																		<div class="col-md-6">
+																			<label>إسم الأم:</label><input type="text"
+																				placeholder="" class="form-control"
+																				name="mere_accuse" id="mere_accuse">
+																		</div>
+																	</div>
+
+																	<div class="row">
+																		<div class="col-md-12">
+																			<label>العنوان:</label> <input type="text"
+																				placeholder="" class="form-control"
+																				name="addresse_accuse" id="addresse_accuse">
+																		</div>
+																	</div>
+
+
+																</div>
+																<div class="row">
+																	<div class="col-md-12">
+																		<label>التهمة:</label> <select
+																			class="form-control m-b" name="charge_accuse"
+																			id="charge_accuse">
+																			<option disabled selected>اختر التهمة</option>
+																			<option th:each="charge : ${charges}"
+																				th:value="${charge.idTohma}"
+																				th:text="${charge.nomTohma}"></option>
+																		</select>
+																	</div>
+																</div>
+
+																<div class="row">
+																	<div class="col-md-6"></div>
+																	<div class="col-md-6">
+																		<br>
+																		<div class="col-md-4"></div>
+																		<div class="col-md-4">
+																			<button type="button" class="btn btn-primary"
+																				data-toggle="modal" data-target="#accuseModal"
+																				onclick="addAccuseEvent(event); loadVictimes(event);">إضافة
+																				المتهم</button>
+																		</div>
+																		<div class="modal inmodal fade" id="accuseModal"
+																			tabindex="-1" role="dialog" aria-hidden="true">
+																			<div class="modal-dialog modal-sm">
+																				<div class="modal-content">
+																					<div class="modal-header">
+																						<button type="button" class="close"
+																							data-dismiss="modal">
+																							<span aria-hidden="true">&times;</span><span
+																								class="sr-only">Close</span>
+																						</button>
+																						<h4 class="modal-title">المتهم</h4>
+																					</div>
+																					<div class="modal-body" id="accuseModalBody"></div>
+																					<div class="modal-footer" id="accuseModalBtn">
+																						<button type="button" class="btn btn-white"
+																							data-dismiss="modal">غلق</button>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-4"></div>
+																	</div>
+
+																</div>
+															</div>
+														</div>
+													</div>
+
+													<div class="panel panel-default">
+														<div class="panel-heading">
+															<h4 class="panel-title">
+																<a data-toggle="collapse" data-parent="#accordion"
+																	href="#collapseFive" id="officierCivil">2 - المسؤول
+																	المدني</a>
+															</h4>
+														</div>
+														<div id="collapseFive" class="panel-collapse collapse">
+															<div class="panel-body">
+																<div class="field_form" id="liste_officier_civil"
+																	style="display: block">
+																	<div class="row">
+																		<div class="col-md-5">
+																			<label>إسم المسؤول المدني:</label> <select
+																				class="form-control m-b"
+																				name="liste_officier_civils"
+																				id="liste_officier_civils">
+																				<option disabled selected>اختر المسؤول
+																					المدني</option>
+																				<option th:each="officierCivil : ${officierCivils}"
+																					th:value="${officierCivil.getCniOfficierCivil()}"
+																					th:text="${officierCivil.getPrenom()} + ' ' + ${officierCivil.getNom()}"></option>
+																			</select>
+																		</div>
+																		<div class="col-md-2"></div>
+																		<div class="col-md-5">
+																			<label class="">المسؤول المدني ليس في
+																				القائمة؟</label><br> <input type="checkbox"
+																				name="check_officier_civil"
+																				id="check_officier_civil"
+																				onchange="afficheOfficierCivilInput()"><span>
+																				إضافة المسؤول المدني </span>
+																		</div>
+
+																	</div>
+																</div>
+																<div class="field_form" id="field_officier_civil"
+																	style="display: none">
+																	<h2>معلومات عن المسؤول المدني</h2>
+																	<div class="col-sm-12">
+																		<div class="row">
+																			<div class="col-md-4">
+																				<label>رقم البطاقة الوطنية:</label><input
+																					type="text" placeholder="" class="form-control"
+																					name="cni_officier_civil" id="cni_officier_civil">
+																			</div>
+																			<div class="col-md-4">
+																				<label>الإسم:</label><input type="text"
+																					placeholder="" class="form-control"
+																					name="prenom_officier_civil"
+																					id="prenom_officier_civil">
+																			</div>
+																			<div class="col-md-4">
+																				<label>النسب:</label><input type="text"
+																					placeholder="" class="form-control"
+																					name="nom_officier_civil" id="nom_officier_civil">
+																			</div>
+																		</div>
+																		<div class="row">
+																			<div class="col-md-4">
+																				<label>شركة التأمين:</label> <select
+																					class="form-control m-b"
+																					name="assurance_officier_civil"
+																					id="assurance_officier_civil">
+																					<option disabled selected>اختر التأمين</option>
+																					<option th:each="assurance : ${assurances}"
+																						th:value="${assurance.idAssurance}"
+																						th:text="${assurance.nomAssurance}"></option>
+																				</select>
+																			</div>
+																			<div class="col-md-8">
+																				<label>العنوان:</label><input type="text"
+																					placeholder="" class="form-control"
+																					name="addresse_officier_civil"
+																					id="addresse_officier_civil">
+																			</div>
+																		</div>
+
+																	</div>
+																	<br> <br>.
+																</div>
+																<div class="row">
+																	<div class="col-md-6"></div>
+																	<div class="col-md-6">
+																		<br>
+																		<div class="col-md-4"></div>
+																		<div class="col-md-4">
+																			<button type="button" class="btn btn-primary"
+																				data-toggle="modal"
+																				data-target="#officierCivilModal"
+																				onclick="addOfficierCivilEvent(event);">إضافة
+																				المسؤول المدني</button>
+																		</div>
+																		<div class="modal inmodal fade"
+																			id="officierCivilModal" tabindex="-1" role="dialog"
+																			aria-hidden="true">
+																			<div class="modal-dialog modal-sm">
+																				<div class="modal-content">
+																					<div class="modal-header">
+																						<button type="button" class="close"
+																							data-dismiss="modal">
+																							<span aria-hidden="true">&times;</span><span
+																								class="sr-only">Close</span>
+																						</button>
+																						<h4 class="modal-title">المسؤول المدني</h4>
+																					</div>
+																					<div class="modal-body" id="officierCivilModalBody"></div>
+																					<div class="modal-footer"
+																						id="officierCivilModalBtn">
+																						<button type="button" class="btn btn-white"
+																							data-dismiss="modal">غلق</button>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-4"></div>
+																	</div>
+
+																</div>
+															</div>
+														</div>
+													</div>
+
+													<div class="panel panel-default">
+														<div class="panel-heading">
+															<h4 class="panel-title">
+																<a data-toggle="collapse" data-parent="#accordion"
+																	href="#collapseSix" id="avocatAccuse">3 - محامي
+																	المتهم</a>
+															</h4>
+														</div>
+														<div id="collapseSix" class="panel-collapse collapse">
+															<div class="panel-body">
+																<div class="field_form" id="liste_avocat_victime"
+																	style="display: block">
+																	<div class="row">
+																		<div class="col-md-5">
+																			<label>إسم المحامي:</label> <select
+																				class="form-control m-b" name="liste_avocats_accuse"
+																				id="liste_avocats_accuse">
+																				<option disabled selected>اختر المحامي</option>
+																				<option th:each="avocat : ${avocats}"
+																					th:value="${avocat.getCin()}"
+																					th:text="${avocat.getPrenom()} + ' ' + ${avocat.getNom()}"></option>
+																			</select>
+																		</div>
+																		<div class="col-md-2"></div>
+																		<div class="col-md-5">
+																			<label class="">المحامي ليس في القائمة؟</label><br>
+																			<input type="checkbox" name="check_avocat_accuse"
+																				id="check_avocat_accuse"
+																				onchange="afficheAvocatAccuseInput()"><span>
+																				إضافة المحامي </span>
+																		</div>
+
+																	</div>
+																</div>
+																<div class="field_form" id="field_avocat_accuse"
+																	style="display: none">
+																	<h2>معلومات عن المحامي</h2>
+																	<div class="col-sm-12">
+																		<div class="row">
+																			<div class="col-md-4">
+																				<label>رقم البطاقة الوطنية:</label><input
+																					type="text" placeholder="" class="form-control"
+																					name="cni_avocat_accuse" id="cni_avocat_accuse">
+																			</div>
+																			<div class="col-md-4">
+																				<label>الإسم:</label><input type="text"
+																					placeholder="" class="form-control"
+																					name="prenom_avocat_accuse"
+																					id="prenom_avocat_accuse">
+																			</div>
+																			<div class="col-md-4">
+																				<label>النسب:</label><input type="text"
+																					placeholder="" class="form-control"
+																					name="nom_avocat_accuse" id="nom_avocat_accuse">
+																			</div>
+																		</div>
+																		<div class="row">
+																			<div class="col-md-4">
+																				<label>الهيئة:</label> <select
+																					class="form-control m-b" name="barreau_accuse"
+																					id="barreau_accuse">
+																					<option disabled selected>اختر الهيئة</option>
+																					<option th:each="barreau : ${barreaux}"
+																						th:value="${barreau.idBarreau}"
+																						th:text="${barreau.nomBarreau}"></option>
+																				</select>
+																			</div>
+																			<div class="col-md-8">
+																				<label>العنوان:</label><input type="text"
+																					placeholder="" class="form-control"
+																					name="addresse_avocat_accuse"
+																					id="addresse_avocat_accuse">
+																			</div>
+																		</div>
+
+																	</div>
+																	<br> <br>.
+																</div>
+																<div class="row">
+																	<div class="col-md-6"></div>
+																	<div class="col-md-6">
+																		<br>
+																		<div class="col-md-4"></div>
+																		<div class="col-md-4">
+																			<button type="button" class="btn btn-primary"
+																				data-toggle="modal" data-target="#avocatAccuseModal"
+																				onclick="addAvocatAccuseEvent(event);">إضافة
+																				المحامي</button>
+																		</div>
+																		<div class="modal inmodal fade" id="avocatAccuseModal"
+																			tabindex="-1" role="dialog" aria-hidden="true">
+																			<div class="modal-dialog modal-sm">
+																				<div class="modal-content">
+																					<div class="modal-header">
+																						<button type="button" class="close"
+																							data-dismiss="modal">
+																							<span aria-hidden="true">&times;</span><span
+																								class="sr-only">Close</span>
+																						</button>
+																						<h4 class="modal-title">محامي المتهم</h4>
+																					</div>
+																					<div class="modal-body" id="avocatAccuseModalBody"></div>
+																					<div class="modal-footer" id="avocatAccuseModalBtn">
+																						<button type="button" class="btn btn-white"
+																							data-dismiss="modal">غلق</button>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-4"></div>
+																	</div>
+
+																</div>
+															</div>
+														</div>
+													</div>
+
+												</div>
+											</div>
+										</div>
+
+										<div class="field_form" id="field_table_accuse"
+											style="display: block">
+											<br> <br>
+											<h2>قائمة المتهمين</h2>
+											<div class="col-sm-12">
+												<div class="row">
+													<div class="col-lg-12">
+														<div class="ibox">
+															<div class="ibox-content">
+
+																<table
+																	class="footable table table-stripped toggle-arrow-tiny"
+																	data-page-size="10">
+																	<thead>
+																		<tr>
+
+																			<th>ب.و.ت</th>
+																			<th data-hide="phone">الإسم</th>
+																			<th data-hide="phone">النسب</th>
+																			<th data-hide="phone">الوظيفة</th>
+																			<th data-hide="phone" class="text-right">الإعدادات</th>
+
+																		</tr>
+																	</thead>
+																	<tbody id="table_accuse_body"></tbody>
+																	<tfoot>
+																		<!--<tr>
+								                                    <td colspan="7">
+								                                        <ul class="pagination float-right"></ul>
+								                                    </td>
+								                                </tr>-->
+																	</tfoot>
+																</table>
+
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+
+									</fieldset>
+
+									<h1>الشهود</h1>
+									<fieldset>
+										<div class="field_form" id="liste_temoin"
+											style="display: block">
+											<div class="row">
+												<div class="col-md-5">
+													<label>إسم الشاهد:</label> <select class="form-control m-b"
+														name="liste_temoins" id="liste_temoins">
+														<option disabled selected>اختر الشاهد</option>
+														<option th:each="temoin : ${temoins}"
+															th:value="${temoin.getCinTemoin()}"
+															th:text="${temoin.getPrenom()} + ' ' + ${temoin.getNom()}"></option>
+													</select>
+												</div>
+												<div class="col-md-2"></div>
+												<div class="col-md-5">
+													<label class="">الشاهد ليس في القائمة؟</label><br> <input
+														type="checkbox" name="check_temoin" id="check_temoin"
+														onchange="afficheTemoinInput()"><span>
+														إضافة الشاهد </span>
+												</div>
+
+											</div>
+										</div>
+										<div class="field_form" id="field_temoin"
+											style="display: none">
+											<h2>معلومات عن الشاهد</h2>
+											<div class="col-sm-12">
+												<div class="row">
+													<div class="col-md-4">
+														<label>رقم البطاقة الوطنية:</label><input type="text"
+															placeholder="" class="form-control" name="cni_temoin"
+															id="cni_temoin">
+													</div>
+													<div class="col-md-4">
+														<label>الإسم:</label><input type="text" placeholder=""
+															class="form-control" name="prenom_temoin"
+															id="prenom_temoin">
+													</div>
+													<div class="col-md-4">
+														<label>النسب:</label><input type="text" placeholder=""
+															class="form-control" name="nom_temoin" id="nom_temoin">
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-md-4">
+														<label>الوضع الإجتماعي:</label> <select
+															class="form-control m-b" name="etat_sociale_temoin"
+															id="etat_sociale_temoin">
+															<option>عازب</option>
+															<option>متزوج</option>
+															<option>مطلق</option>
+															<option>أرمل</option>
+														</select>
+													</div>
+													<div class="col-md-4">
+														<label>الوظيفة:</label> <select class="form-control m-b"
+															name="job_temoin" id="job_temoin">
+															<option>أستاذ</option>
+															<option>موظف</option>
+															<option>تاجر</option>
+															<option>أجير</option>
+														</select>
+													</div>
+													<div class="col-md-4">
+														<label>الجنس:</label>
+														<div class="row">
+															<div class="col-md-4"></div>
+															<div class="col-md-4">
+																<label class="radio-inline"><input type="radio"
+																	class="sexe_temoin" name="sexe_temoin" value="ذكر"
+																	checked>ذكر</label>
+															</div>
+															<div class="col-md-4">
+																<label class="radio-inline"><input type="radio"
+																	class="sexe_temoin" name="sexe_temoin" value="أنثى">أنثى</label>
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-md-6">
+														<label>تاريخ الإزدياد:</label><input type="date"
+															placeholder="" class="form-control"
+															name="date_naissance_temoin" id="date_naissance_temoin">
+													</div>
+													<div class="col-md-6">
+														<label>مكان الإزدياد:</label><input type="text"
+															placeholder="" class="form-control"
+															name="lieu_naissance_temoin" id="lieu_naissance_temoin">
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-md-6">
+														<label>إسم الأب:</label><input type="text" placeholder=""
+															class="form-control" name="pere_temoin" id="pere_temoin">
+													</div>
+													<div class="col-md-6">
+														<label>إسم الأم:</label><input type="text" placeholder=""
+															class="form-control" name="mere_temoin" id="mere_temoin">
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-md-12">
+														<label>العنوان:</label><input type="text" placeholder=""
+															class="form-control" name="addresse_temoin"
+															id="addresse_temoin">
+													</div>
+												</div>
+											</div>
+										</div>
+										
+										<div class="row">
+													<div class="col-md-6"></div>
+													<div class="col-md-6">
+														<br>
+														<div class="col-md-4"></div>
+														<div class="col-md-4">
+															<button type="button" class="btn btn-primary"
+																data-toggle="modal" data-target="#temoinModal"
+																onclick="addTemoinEvent(event);">إضافة الشاهد</button>
+														</div>
+														<div class="modal inmodal fade" id="temoinModal"
+															tabindex="-1" role="dialog" aria-hidden="true">
+															<div class="modal-dialog modal-sm">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		<button type="button" class="close"
+																			data-dismiss="modal">
+																			<span aria-hidden="true">&times;</span><span
+																				class="sr-only">Close</span>
+																		</button>
+																		<h4 class="modal-title">الشاهد</h4>
+																	</div>
+																	<div class="modal-body" id="temoinModalBody"></div>
+																	<div class="modal-footer" id="temoinModalBtn">
+																		<button type="button" class="btn btn-white"
+																			data-dismiss="modal">غلق</button>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="col-md-4"></div>
+													</div>
+												</div>
+
+										<div class="field_form" id="field_table_temoin"
+											style="display: block">
+											<br> <br>
+											<h2>قائمة الشهود</h2>
+											<div class="col-sm-12">
+												<div class="row">
+													<div class="col-lg-12">
+														<div class="ibox">
+															<div class="ibox-content">
+
+																<table
+																	class="footable table table-stripped toggle-arrow-tiny"
+																	data-page-size="10">
+																	<thead>
+																		<tr>
+
+																			<th>ب.و.ت</th>
+																			<th data-hide="phone">الإسم</th>
+																			<th data-hide="phone">النسب</th>
+																			<th data-hide="phone">الوظيفة</th>
+																			<th data-hide="phone" class="text-right">الإعدادات</th>
+
+																		</tr>
+																	</thead>
+																	<tbody id="table_temoin_body"></tbody>
+																	<tfoot>
+																		<!--<tr>
+								                                    <td colspan="7">
+								                                        <ul class="pagination float-right"></ul>
+								                                    </td>
+								                                </tr>-->
+																	</tfoot>
+																</table>
+
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</fieldset>
+
+								</form>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+
+			<div class="footer">
+				<div class="float-right">
+					<strong>إدارة حوادث السير</strong>
+				</div>
+				<div class="float-left">
+					<strong>جميع الحقوق محفوظة</strong> &copy; 2020-2021
+				</div>
+			</div>
+
+
+
+		</div>
+	</div>
+
+
+
+	<!-- Mainly scripts -->
+	<script src="js1/jquery-3.1.1.min.js"></script>
+	<script src="js1/popper.min.js"></script>
+	<script src="js1/bootstrap1.js"></script>
+	<script src="js1/plugins/metisMenu/jquery.metisMenu.js"></script>
+	<script src="js1/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+	<!-- Custom and plugin javascript -->
+	<script src="js1/inspinia.js"></script>
+	<script src="js1/plugins/pace/pace.min.js"></script>
+
+	<!-- Steps -->
+	<script src="js1/plugins/steps/jquery.steps.min.js"></script>
+
+	<!-- Jquery Validate -->
+	<script src="js1/plugins/validate/jquery.validate.min.js"></script>
+
+
+	<script>
+		$(document)
+				.ready(
+						function() {
+							$("#wizard").steps();
+							$("#form")
+									.steps(
+											{
+												labels : {
+													cancel : "إلغاء",
+													current : "current step:",
+													pagination : "Pagination",
+													finish : "إضافة",
+													next : "التالي",
+													previous : "السابق",
+													loading : "تحميل ..."
+												},
+												bodyTag : "fieldset",
+												onStepChanging : function(
+														event, currentIndex,
+														newIndex) {
+													// Always allow going backward even if the current step contains invalid fields!
+													if (currentIndex > newIndex) {
+														return true;
+													}
+
+													// Forbid suppressing "Warning" step if the user is to young
+													if (newIndex === 3
+															&& Number($("#age")
+																	.val()) < 18) {
+														return false;
+													}
+
+													var form = $(this);
+
+													// Clean up if user went backward before
+													if (currentIndex < newIndex) {
+														// To remove error styles
+														$(
+																".body:eq("
+																		+ newIndex
+																		+ ") label.error",
+																form).remove();
+														$(
+																".body:eq("
+																		+ newIndex
+																		+ ") .error",
+																form)
+																.removeClass(
+																		"error");
+													}
+
+													// Disable validation on fields that are disabled or hidden.
+													form.validate().settings.ignore = ":disabled,:hidden";
+
+													// Start validation; Prevent going forward if false
+													return form.valid();
+												},
+												onStepChanged : function(event,
+														currentIndex,
+														priorIndex) {
+													// Suppress (skip) "Warning" step if the user is old enough.
+													if (currentIndex === 2
+															&& Number($("#age")
+																	.val()) >= 18) {
+														$(this).steps("next");
+													}
+
+													// Suppress (skip) "Warning" step if the user is old enough and wants to the previous step.
+													if (currentIndex === 2
+															&& priorIndex === 3) {
+														$(this).steps(
+																"previous");
+													}
+												},
+												onFinishing : function(event,
+														currentIndex) {
+													var form = $(this);
+
+													// Disable validation on fields that are disabled.
+													// At this point it's recommended to do an overall check (mean ignoring only disabled fields)
+													form.validate().settings.ignore = ":disabled";
+
+													// Start validation; Prevent form submission if false
+													return form.valid();
+												},
+												onFinished : function(event,
+														currentIndex) {
+													var form = $(this);
+
+													// Submit form input
+													form.submit();
+												}
+											}).validate(
+											{
+												errorPlacement : function(
+														error, element) {
+													element.before(error);
+												},
+												rules : {
+													confirm : {
+														equalTo : "#password"
+													}
+												}
+											});
+						});
+	</script>
+
+
+	<script type="text/javascript">
+		
+	</script>
+
+
+	<!-- FooTable -->
+	<script src="js1/plugins/footable/footable.all.min.js"></script>
+
+	<!-- Page-Level Scripts -->
+	<script>
+	
+	function openTab(evt, tabName) {
+		  var i, tabcontent, tablinks;
+		  tabcontent = document.getElementsByClassName("tabcontent");
+		  for (i = 0; i < tabcontent.length; i++) {
+		    tabcontent[i].style.display = "none";
+		  }
+		  
+		  tablinks = document.getElementsByClassName("tablinks");
+		  for (i = 0; i < tablinks.length; i++) {
+		    tablinks[i].className = tablinks[i].className.replace(" active", "");
+		  }
+		  document.getElementById(tabName).style.display = "block";
+		  evt.currentTarget.className += " active";
+		}
+	
+	
+		$(document).ready(function() {
+
+			$('.footable').footable();
+
+			$('#date_added').datepicker({
+				todayBtn : "linked",
+				keyboardNavigation : false,
+				forceParse : false,
+				calendarWeeks : true,
+				autoclose : true
+			});
+
+			$('#date_modified').datepicker({
+				todayBtn : "linked",
+				keyboardNavigation : false,
+				forceParse : false,
+				calendarWeeks : true,
+				autoclose : true
+			});
+			
+			
+
+		});
+		
+		// toggle AddDawiBtn
+		
+		function toggleAddDawiBtn(res){
+			if(res===true)
+				document.getElementById('addDawiBtn').style.display = 'block';
+			else
+				document.getElementById('addDawiBtn').style.display = 'none';
+		}
+		
+
+		// toggle Wadifa & salary inputs visibility
+
+		function toggleFields(event) {
+		  event.preventDefault();
+		     if ($("#job_victime").prop("selectedIndex") === 4) {
+		       $("#autre_profession_victime").removeAttr("disabled");
+		       $("#salaire_annuel_victime").removeAttr("disabled");
+		     }
+		     else {
+		       $("#autre_profession_victime").attr("disabled", "disabled");
+		       $("#salaire_annuel_victime").attr("disabled", "disabled");
+		     }
+		}
+		
+	</script>
+	<script type="text/javascript" src="js1/api/ajouterDossier.js"></script>
+	<script type="text/javascript" src="js1/api/scripts.js"></script>
+
+</body>
+
+</html>

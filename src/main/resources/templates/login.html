@@ -1,0 +1,79 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="css/style_login.css">
+<link href="css1/plugins/bootstrap-rtl/bootstrap-rtl.min.css" rel="stylesheet">
+<title th:text="#{label.pages.login.title}"></title>
+<link rel="icon" type="image/png" href="img1/law-favicon.svg">
+<script th:inline="javascript">
+	function validate() {
+        if (document.f.username.value == "" && document.f.password.value == "") {
+            alert(/*[[#{message.username} + #{message.password}]]*/);
+            document.f.username.focus();
+            return false;
+        }
+        if (document.f.username.value == "") {
+            alert(/*[[#{message.username}]]*/);
+            document.f.username.focus();
+            return false;
+        }
+        if (document.f.password.value == "") {
+            alert(/*[[#{message.password}]]*/);
+            document.f.password.focus();
+            return false;
+        }
+    }
+    
+</script>
+	<style type="text/css">
+    	@import url('https://fonts.googleapis.com/earlyaccess/droidarabickufi.css');
+    	*{
+    		font-family: 'Droid Arabic Kufi';
+    	}
+    </style>
+</head>
+<body class="rtls">
+<div th:if="${param.message != null}" class="alert1 alert alert-info" th:text="${param.message[0]}">message</div>
+
+
+<div th:if="${param.error != null}" class="alert alert-danger" th:text="${session[SPRING_SECURITY_LAST_EXCEPTION]}">error</div>
+
+    <div class="wrapper" style="background-image: url('img/logo-background.jpg');">
+        <div class="inner">
+             <!-- <a href="?lang=en" th:text="#{label.form.loginEnglish}">login</a> | 
+         <a href="?lang=es_ES" th:text="#{label.form.loginSpanish}">login</a> -->
+            <a  th:href="@{/index}"><img src="img1/justice-blue.png" width="200" alt="Menu principal"  class="logologin" style="display: block;margin: 0 auto;padding-top: 20px;"/></a>
+            <br/><br/>
+            
+            <form name='f' action="login" method='POST' onsubmit="return validate();">
+               <h3 style="text-align: center;"th:text="#{label.form.loginTitle}">Header</h3>
+                 <span id="welcometext">&nbsp;</span>
+                <div class="form-wrapper">
+                    <label  th:text="#{label.form.loginEmail}">email</label>
+                    <input type="text" class="form-control" name='username' value='' required="required" oninvalid="this.setCustomValidity('المرجو ادخال البريد الالكتروني')" oninput="setCustomValidity('')"/>                  
+                    <span id="emailError" class="alert alert-danger" style="display:none"></span>
+                 </div> 
+                 <div class="form-wrapper">
+                    <label  th:text="#{label.form.loginPass}">password</label>
+                    <input id="password" class="form-control" name="password" value="" type="password" required="required" oninvalid="this.setCustomValidity('المرجو ادخال كلمة المرور')" oninput="setCustomValidity('')"/>
+                    <span id="passwordError" class="alert alert-danger" style="display:none"></span>
+                 </div>  
+                <!-- <div class="form-wrapper">
+                    <label  th:text="#{label.form.login2fa}">Google Authenticator Verification</label>
+                    <input  class="form-control" name="code" value="" type="text" />
+                 </div>   -->
+                
+                 <button class="btn btn-primary" name="submit" type="submit" th:text="#{label.form.submit}" >submit</button>
+ 
+            </form>
+               <!-- <br/> Current Locale :  <span th:text="${#locale}"></span><br/><br/>   -->
+             <a class=" button1 btn btn-default" th:href="@{/registration.html}" th:text="#{label.form.loginSignUp}"></a>
+            <!--  <a class="btn btn-default button1" th:href="@{/registrationCaptcha.html}" th:text="#{label.form.loginSignUpCaptcha}"></a> -->
+            <a class="btn btn-default button1" th:href="@{/forgetPassword.html}" th:text="#{message.resetPassword}"></a>
+        </div>
+    </div>
+</body>
+
+</html>
