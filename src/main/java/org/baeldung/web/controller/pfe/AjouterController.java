@@ -26,6 +26,7 @@ import org.baeldung.persistence.model.pfe.Temoin;
 import org.baeldung.persistence.model.pfe.UserDossier;
 import org.baeldung.persistence.model.pfe.Victime;
 import org.baeldung.service.pfe.AjouterService;
+import org.baeldung.web.dto.VictimDawi;
 import org.baeldung.web.util.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -175,7 +176,6 @@ public class AjouterController {
 			victime.setAddresse(addresse_victime);
 			victime.setMontantDemande(Double.parseDouble(montantDemande));
 			victime.setEtat("حي");
-			System.out.println("le montant est : "+victime.getMontantDemande());
 			ajouterService.ajouterVictime(victime);
 			
 			Long idVictime = ajouterService.consulterVictime(cni_victime).getId();
@@ -247,6 +247,25 @@ public class AjouterController {
 		}
 	}
 
+	
+	public List<Object> victimDawiList(Long idVictm){
+		List<Object> victimeDawis = new ArrayList<Object>();
+		try {
+
+			DroitsPersonneDecedee victimDawi = new DroitsPersonneDecedee();
+			for (Indemnite object : ajouterService.listeIndemnites()) {
+				if(object.getIdVictime().toString().equals(idVictm.toString())) {
+					victimDawi = (DroitsPersonneDecedee)ajouterService.consulterDawi(object.getIdDawi());
+					VictimDawi VD = new VictimDawi(idVictm, object.getIdDawi(),victimDawi.getNom(), victimDawi.getPrenom(), object.getCoteFamille(), object.getHa9Ta3wid());
+					victimeDawis.add(VD);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return victimeDawis;
+	}
 
 	@PostMapping("Client/ajouterDossier/dawi")
 	@ResponseBody
@@ -261,8 +280,9 @@ public class AjouterController {
 			@RequestParam("job") String job,
 			@RequestParam("addresse") String addresse,
 			@RequestParam("id_victime") String id_victime){
-
+		
 		List<Object> victimeDawis = new ArrayList<Object>();
+
 		
 		try {
 			DroitsPersonneDecedee dawi = new DroitsPersonneDecedee();
@@ -303,15 +323,17 @@ public class AjouterController {
 
 			DroitsPersonneDecedee victimDawi = new DroitsPersonneDecedee();
 			for (Indemnite object : ajouterService.listeIndemnites()) {
-				if(object.getIdVictime().toString().equals(id_victime.toString())) {
+				if(object.getIdVictime().toString().equals(id_victime)) {
 					victimDawi = (DroitsPersonneDecedee)ajouterService.consulterDawi(object.getIdDawi());
-					if(victimeDawis.size() == 0)
+					VictimDawi VD = new VictimDawi(Long.parseLong(id_victime), idDawi,victimDawi.getNom(), victimDawi.getPrenom(), object.getCoteFamille(), object.getHa9Ta3wid());
+
+					if(victimeDawis.size() == 0) {
 						victimeDawis.add(new GenericResponse("تم إضافة ذي الحقوق بنجاح", "success"));
+					}
 					
-					victimeDawis.add(victimDawi);
+					victimeDawis.add(VD);
 				}
 			}
-
 			return victimeDawis;
 			
 		} catch (Exception e) {
@@ -747,4 +769,26 @@ public class AjouterController {
 	}
 	
 	
+
+
+// supprimer dawi 
+	
+@PostMapping("Client/ajouterDossier/supprimerDawi")
+@ResponseBody
+public List<Object> supprimerDawi(@RequestParam("idDawi") String idDawi, @RequestParam("idVictime") String idVictime){
+	
+	List<Object> listDawis = new ArrayList<Object>() ;
+	try {
+		ajouterService.supprimerIdemniteByIdDawi(Long.parseLong(idDawi));
+		ajouterService.supprimerDawiById(Long.parseLong(idDawi));
+		System.out.println("ID dawi a supprimer: "+idDawi);
+		listDawis =victimDawiList(Long.parseLong(idVictime));
+		return listDawis;
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+		listDawis.add(new GenericResponse("حدث خطأ، لم يتم حذف ذوي الحقوق", "error"));
+		return listDawis;
+	}
+}
 }

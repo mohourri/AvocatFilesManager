@@ -409,28 +409,80 @@ function addDawiEvent(event) {
 }
 
 
-function supprimerDawi(id){
-	let text = "voulez-vous vraiment supprimer ce titulaire de droit ?";
-	  if (confirm(text) == true) {
-			$.ajax({
+function supprimerDawi(event,idDawi, idVictime){
+	event.preventDefault();
+  	var formData = new FormData();
+    formData.append("idDawi", ""+idDawi);
+    formData.append("idVictime", ""+idVictime);
+	console.log("ID dawi a supprimer : "+idDawi);
+	  if (confirm("تأكيد الحذف") == true) {
+		fire_ajax_delete_dawi(formData);
+	  }
+  
+}
+
+function fire_ajax_delete_dawi(formData){
+	$.ajax({
 			    type: "POST",
 			    url: "Client/ajouterDossier/supprimerDawi",
 			    processData: false,
 			    contentType: false,
 			    cache: false,
-			    data: id,
+			    data: formData,
 			    timeout: 600000,
 			    success: function (data) {
-			      if (data[0]["error"] == "success") {
-			      } else if (data[0]["error"] == "error") {
-			      }
+					alert("تم حذف ذي الحقوق بنجاح");
+					fillTable(data,0);
+					console.log(data);
 			    },
-			    error: function () {},
+			    error: function () {
+					alert("حدث خطأ أثناء الحذف");
+				
+			},
 		  });
-	  } else {
-	    text = "You canceled!";
-	  }
-  
+}
+
+function modifierDawi(event, idDawi, idVictime){
+	event.preventDefault()
+	event.preventDefault();
+	
+	
+    document.getElementById("addDawiBtn").className = "active";
+    document.getElementById("tab1").style.display = "block";
+    
+	$("#relation_dawi").val("") 
+    $(".droit_compensation:checked").val()
+	$("#cni_famille_victime").val()
+    $("#nomfam_famille_victime").val()
+    $("#prenom_famille_victime").val()
+    $("#naissance_famille_victime").val()
+    $("#etat_sociale_famille_victime").val()
+    $("#job_famille_victime").val()
+    $("#addresse_famille_victime").val()
+
+	
+}
+
+function fillTable(data, n){
+	
+        var dawi_element ="";
+		for (var i =n ; i < data.length; i++) {
+			console.log(data[i]);
+    		dawi_element+=
+	          "<tr><td>" +
+	          data[i]["nom"] +
+	          "</td><td>" +
+	          data[i]["prenom"] +
+	          "</td > <td>" +
+	          data[i]["relation"] +
+	          "</td><td>" +
+	          data[i]["ta3wid"] +
+	          '</td><td class="text-right"><div class="btn-group"><button onclick="modifierDawi(event,'+data[i]+');" class="btn-white btn btn-xs">تعديل</button><button onclick="supprimerDawi(event,'+data[i]["idDawi"]+','+data[i]["idVictime"]+');" class="btn-white btn btn-xs">حذف</button></div></td></tr>';
+	        
+		}
+		$("#table_dawi_body").empty();
+		$("#table_dawi_body").append(dawi_element);
+        
 }
 
 function fire_ajax_dawi(formData) {
@@ -444,33 +496,16 @@ function fire_ajax_dawi(formData) {
     timeout: 600000,
     success: function (data) {
       if (data[0]["message"]==="تم إضافة ذي الحقوق بنجاح"){
-		console.log("تم إضافة ذي الحقوق بنجاح");
+		console.log(data);
         var success = "تم إضافة ذي الحقوق بنجاح";
         $("#dawiModalBody").empty();
         $("#dawiModalBody").append(success);
-
+		
         var btn =
           '<button type="button" class="btn btn-primary" data-dismiss="modal">حفظ</button>';
         $("#dawiModalBtn").empty();
         $("#dawiModalBtn").append(btn);
-        
-		for (var i = 1; i < data.length; i++) { 
-			
-        var dawi_element =
-	          "<tr><td>الأب</td><td>" +
-	          data[i]["cin"] +
-	          "</td><td>" +
-	          data[i]["prenom"] +
-	          "</td > <td>" +
-	          data[i]["nom"] +
-	          "</td><td>" +
-	          data[i]["proffession"] +
-	          '</td><td class="text-right"><div class="btn-group"><button class="btn-white btn btn-xs">تعديل</button><button onclick="supprimerDawi('+data[i]["id"]+');" class="btn-white btn btn-xs">حذف</button></div></td></tr>';
-	        console.log(data[i]);
-		}
-		$("#table_dawi_body").empty();
-		$("#table_dawi_body").append(dawi_element);
-        
+        fillTable(data,1);
       } else {
 		console.log(data[0]["error"]);
         var error = data[0]["error"];

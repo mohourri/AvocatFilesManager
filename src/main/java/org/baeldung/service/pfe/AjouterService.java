@@ -1,6 +1,6 @@
 package org.baeldung.service.pfe;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.baeldung.persistence.dao.pfe.AccuseRepository;
@@ -270,5 +270,19 @@ public class AjouterService {
 	public void ajouterUserDossier(UserDossier userDossier) {
 		userDossierRepository.save(userDossier);
 	}
+
+	public void supprimerDawiById(Long id) {
+		dawiRepository.deleteById(id);
+	}
 	
+	public void supprimerIdemniteByIdDawi(Long idDawi) {
+		List<Indemnite> indems = new ArrayList<Indemnite>();
+		indems = indemniteRepository.findAll();
+		for (Indemnite indem : indems) {
+			if(indem.getIdDawi().toString().equals(idDawi.toString())) {
+				indemniteRepository.delete(indem);
+
+			}
+		}
+	}
 }
