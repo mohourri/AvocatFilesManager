@@ -354,6 +354,24 @@ function updateEtatVictime() {
   });
 }
 
+
+	function openTab(evt, tabName) {
+		evt.preventDefault();
+		  var i, tabcontent, tablinks;
+		  tabcontent = document.getElementsByClassName("tabcontent");
+		  for (i = 0; i < tabcontent.length; i++) {
+		    tabcontent[i].style.display = "none";
+		  }
+		  
+		  tablinks = document.getElementsByClassName("tablinks");
+		  for (i = 0; i < tablinks.length; i++) {
+		    tablinks[i].className = tablinks[i].className.replace(" active", "");
+		  }
+		  document.getElementById(tabName).style.display = "block";
+		  evt.currentTarget.className += " active";
+		}
+	
+
 // calcule age
 /*
 function calculerAge(dateNaiss){
@@ -442,23 +460,20 @@ function fire_ajax_delete_dawi(formData){
 		  });
 }
 
-function modifierDawi(event, idDawi, idVictime){
-	event.preventDefault()
+function modifierDawi(event, {addresse,cin, dateNaissance, idDawi, idVictime, nisbMadi, nom, prenom, proffession, relation, situationFamilialle, ta3wid, ta3widDawi, ta3widMa3nawi}){
 	event.preventDefault();
-	
-	
-    document.getElementById("addDawiBtn").className = "active";
-    document.getElementById("tab1").style.display = "block";
+	console.log(nom+" "+ prenom);
+	openTab(event, 'tab1');
     
-	$("#relation_dawi").val("") 
-    $(".droit_compensation:checked").val()
-	$("#cni_famille_victime").val()
-    $("#nomfam_famille_victime").val()
-    $("#prenom_famille_victime").val()
-    $("#naissance_famille_victime").val()
-    $("#etat_sociale_famille_victime").val()
-    $("#job_famille_victime").val()
-    $("#addresse_famille_victime").val()
+	$("#relation_dawi").val(dawi["relation"]);
+    $(".droit_compensation:checked").val();
+	$("#cni_famille_victime").val();
+    $("#nomfam_famille_victime").val(dawi["nom"]);
+    $("#prenom_famille_victime").val(dawi["prenom"]);
+    $("#naissance_famille_victime").val();
+    $("#etat_sociale_famille_victime").val();
+    $("#job_famille_victime").val();
+    $("#addresse_famille_victime").val();
 
 	
 }
