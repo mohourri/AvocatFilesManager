@@ -256,7 +256,7 @@ public class AjouterController {
 			for (Indemnite object : ajouterService.listeIndemnites()) {
 				if(object.getIdVictime().toString().equals(idVictm.toString())) {
 					victimDawi = (DroitsPersonneDecedee)ajouterService.consulterDawi(object.getIdDawi());
-					VictimDawi VD = new VictimDawi(idVictm, object.getIdDawi(),victimDawi.getNom(), victimDawi.getPrenom(), object.getCoteFamille(), object.getHa9Ta3wid());
+					VictimDawi VD = new VictimDawi(idVictm, object.getIdDawi(), victimDawi.getCin(),victimDawi.getNom(), victimDawi.getPrenom(),victimDawi.getAddresse(),victimDawi.getSituationFamilialle(),victimDawi.getDateNaissance(),victimDawi.getTa3wid(),victimDawi.getTa3widMa3nawi(),victimDawi.getProffession(),victimDawi.getNisbMadi(), object.getCoteFamille(), object.getHa9Ta3wid());
 					victimeDawis.add(VD);
 				}
 			}
@@ -325,7 +325,7 @@ public class AjouterController {
 			for (Indemnite object : ajouterService.listeIndemnites()) {
 				if(object.getIdVictime().toString().equals(id_victime)) {
 					victimDawi = (DroitsPersonneDecedee)ajouterService.consulterDawi(object.getIdDawi());
-					VictimDawi VD = new VictimDawi(Long.parseLong(id_victime), idDawi,victimDawi.getNom(), victimDawi.getPrenom(), object.getCoteFamille(), object.getHa9Ta3wid());
+					VictimDawi VD = new VictimDawi(Long.parseLong(id_victime), object.getIdDawi(), victimDawi.getCin(),victimDawi.getNom(), victimDawi.getPrenom(),victimDawi.getAddresse(),victimDawi.getSituationFamilialle(),victimDawi.getDateNaissance(),victimDawi.getTa3wid(),victimDawi.getTa3widMa3nawi(),victimDawi.getProffession(),victimDawi.getNisbMadi(), object.getCoteFamille(), object.getHa9Ta3wid());
 
 					if(victimeDawis.size() == 0) {
 						victimeDawis.add(new GenericResponse("تم إضافة ذي الحقوق بنجاح", "success"));
@@ -781,7 +781,6 @@ public List<Object> supprimerDawi(@RequestParam("idDawi") String idDawi, @Reques
 	try {
 		ajouterService.supprimerIdemniteByIdDawi(Long.parseLong(idDawi));
 		ajouterService.supprimerDawiById(Long.parseLong(idDawi));
-		System.out.println("ID dawi a supprimer: "+idDawi);
 		listDawis =victimDawiList(Long.parseLong(idVictime));
 		return listDawis;
 		

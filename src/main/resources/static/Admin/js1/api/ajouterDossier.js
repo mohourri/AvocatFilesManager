@@ -460,20 +460,26 @@ function fire_ajax_delete_dawi(formData){
 		  });
 }
 
-function modifierDawi(event, {addresse,cin, dateNaissance, idDawi, idVictime, nisbMadi, nom, prenom, proffession, relation, situationFamilialle, ta3wid, ta3widDawi, ta3widMa3nawi}){
+
+function modifierDawi(event,nom, prenom, relation,cin,dateNaissance,
+ situationFamilialle, proffession, ta3wid, addresse ){
 	event.preventDefault();
-	console.log(nom+" "+ prenom);
 	openTab(event, 'tab1');
+    console.log("ta3wid: "+ta3wid);
     
-	$("#relation_dawi").val(dawi["relation"]);
-    $(".droit_compensation:checked").val();
-	$("#cni_famille_victime").val();
-    $("#nomfam_famille_victime").val(dawi["nom"]);
-    $("#prenom_famille_victime").val(dawi["prenom"]);
-    $("#naissance_famille_victime").val();
-    $("#etat_sociale_famille_victime").val();
-    $("#job_famille_victime").val();
-    $("#addresse_famille_victime").val();
+    if(ta3wid === "نعم")
+    	$("#droit_compensation_oui").prop("checked", true);
+    else
+    	$("#droit_compensation_non").prop("checked", true);
+    	
+	$("#relation_dawi").val(relation);
+	$("#cni_famille_victime").val(cin);
+    $("#nomfam_famille_victime").val(nom);
+    $("#prenom_famille_victime").val(prenom);
+    $("#naissance_famille_victime").valueAsDate = new Date();
+    $("#etat_sociale_famille_victime").val(situationFamilialle);
+    $("#job_famille_victime").val(proffession);
+    $("#addresse_famille_victime").val(addresse);
 
 	
 }
@@ -482,7 +488,7 @@ function fillTable(data, n){
 	
         var dawi_element ="";
 		for (var i =n ; i < data.length; i++) {
-			console.log(data[i]);
+			var nom =data[i]["nom"];
     		dawi_element+=
 	          "<tr><td>" +
 	          data[i]["nom"] +
@@ -492,7 +498,7 @@ function fillTable(data, n){
 	          data[i]["relation"] +
 	          "</td><td>" +
 	          data[i]["ta3wid"] +
-	          '</td><td class="text-right"><div class="btn-group"><button onclick="modifierDawi(event,'+data[i]+');" class="btn-white btn btn-xs">تعديل</button><button onclick="supprimerDawi(event,'+data[i]["idDawi"]+','+data[i]["idVictime"]+');" class="btn-white btn btn-xs">حذف</button></div></td></tr>';
+	          '</td><td class="text-right"><div class="btn-group"><button onclick="modifierDawi(event,\'' + data[i]["nom"] + '\',\'' + data[i]["prenom"] + '\',\'' + data[i]["relation"] + '\',\'' + data[i]["cin"] + '\',\'' + data[i]["dateNaissance"] + '\',\'' + data[i]["situationFamilialle"] + '\',\'' + data[i]["proffession"] + '\',\'' + data[i]["ta3wid"] + '\',\'' + data[i]["addresse"] + '\');" class="btn-white btn btn-xs">تعديل</button><button onclick="supprimerDawi(event,'+data[i]["idDawi"]+','+data[i]["idVictime"]+');" class="btn-white btn btn-xs">حذف</button></div></td></tr>';
 	        
 		}
 		$("#table_dawi_body").empty();

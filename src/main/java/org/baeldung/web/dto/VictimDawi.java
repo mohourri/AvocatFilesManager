@@ -6,6 +6,9 @@ import java.util.Date;
 public class VictimDawi {
 
 
+
+
+
 	private Long idVictime;
 
 	private Long idDawi;
@@ -38,12 +41,23 @@ public class VictimDawi {
 	private String ta3wid;
 
 
-	public VictimDawi(Long idVictime, Long idDawi,String nom, String prenom, String relation, String ta3wid) {
+
+	public VictimDawi(Long idVictime, Long idDawi, String cin, String nom, String prenom, String addresse,
+			String situationFamilialle, Date dateNaissance, Double ta3widDawi, Double ta3widMa3nawi, String proffession,
+			Integer nisbMadi, String relation, String ta3wid) {
 		super();
 		this.idVictime = idVictime;
 		this.idDawi = idDawi;
+		this.cin = cin;
 		this.nom = nom;
 		this.prenom = prenom;
+		this.addresse = addresse;
+		this.situationFamilialle = situationFamilialle;
+		this.dateNaissance = dateNaissance;
+		this.ta3widDawi = ta3widDawi;
+		this.ta3widMa3nawi = ta3widMa3nawi;
+		this.proffession = proffession;
+		this.nisbMadi = nisbMadi;
 		this.relation = relation;
 		this.ta3wid = ta3wid;
 	}
