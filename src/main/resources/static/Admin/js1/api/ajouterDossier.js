@@ -391,7 +391,7 @@ function calculerAge(dateNaiss){
 
 function addEditDawiEvent(event) {
     event.preventDefault();
-    var val = event.target.value;
+    var val = $("#addEditDawiBtn").text();
 	var formData = new FormData();
 	formData.append("relation_avec_victime", $("#relation_dawi").val());
 	formData.append("droit_compensation", $(".droit_compensation:checked").val());
@@ -405,8 +405,11 @@ function addEditDawiEvent(event) {
 	formData.append("addresse", $("#addresse_famille_victime").val());
 	
   if(val === "تعديل"){
+	console.log("modification de : "+formData.get("nom"));
     fire_ajax_modifier_dawi(formData);
+    $("#addEditDawiBtn").text("إضافة ذي الحقوق");
   }else{
+	console.log("l'ajout de : "+formData.get("nom"));
     fire_ajax_dawi(formData);
 	
   }
@@ -486,7 +489,7 @@ function modifierDawi(event,nom, prenom, relation,cin,dateNaissance,
     $("#job_famille_victime").val(proffession);
     $("#addresse_famille_victime").val(addresse);
     
-    $("#addEditDawiBtn").val("تعديل");
+    $("#addEditDawiBtn").text("تعديل");
 
 	
 }
