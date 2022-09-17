@@ -790,4 +790,47 @@ public List<Object> supprimerDawi(@RequestParam("idDawi") String idDawi, @Reques
 		return listDawis;
 	}
 }
+
+
+//modifier dawi 
+
+@PostMapping("Client/ajouterDossier/modifierDawi")
+@ResponseBody
+public List<Object> modifierDawi(
+		@RequestParam("relation_avec_victime") String relation_avec_victime,
+		@RequestParam("droit_compensation") String droit_compensation,
+		@RequestParam("cni") String cni,
+		@RequestParam("nom") String nom,
+		@RequestParam("prenom") String prenom,
+		@RequestParam("date_naissance") String date_naissance,
+		@RequestParam("etat_sociale") String etat_sociale,
+		@RequestParam("job") String job,
+		@RequestParam("addresse") String addresse,
+		@RequestParam("id_victime") String id_victime){
+	
+	List<Object> listDawis = new ArrayList<Object>() ;
+	try {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+
+		for (DroitsPersonneDecedee dawi : ajouterService.listeDawis()) {
+			if(dawi.getCin().equals(cni)) {
+				dawi.setCin(cni);
+				dawi.setNom(nom);
+				dawi.setPrenom(prenom);
+				dawi.setSituationFamilialle(etat_sociale);
+				dawi.setAddresse(addresse);
+				dawi.setProffession(job);
+				dawi.setDateNaissance(formatter.parse(date_naissance));
+				listDawis.add(new GenericResponse("تم تحديث ذي الحقوق بنجاح.", "success"));
+			}
+		}
+		listDawis.addAll(victimDawiList(Long.parseLong(id_victime)));
+		return listDawis;
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+		listDawis.add(new GenericResponse("حدث خطأ، لم يتم تحديث ذي الحقوق.", "error"));
+		return listDawis;
+	}
+}
 }

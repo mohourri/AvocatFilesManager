@@ -387,29 +387,29 @@ function calculerAge(dateNaiss){
 }
 */
 
-// Ajout d'un dawi
+// l'ajout d'un dawi
 
-function addDawiEvent(event) {
-  event.preventDefault();
-  var formData = new FormData();
-  //if ($("#check_dawi").prop("checked") === true) {
-    formData.append("relation_avec_victime", $("#relation_dawi").val());
-    formData.append(
-      "droit_compensation",
-      $(".droit_compensation:checked").val()
-    );
-    formData.append("id_victime", $("#etatVictime").val());
-
-    formData.append("cni", $("#cni_famille_victime").val());
-    formData.append("nom", $("#nomfam_famille_victime").val());
-    formData.append("prenom", $("#prenom_famille_victime").val());
-    formData.append("date_naissance", $("#naissance_famille_victime").val());
-    formData.append("etat_sociale", $("#etat_sociale_famille_victime").val());
-    formData.append("job", $("#job_famille_victime").val());
-    formData.append("addresse", $("#addresse_famille_victime").val());
-
+function addEditDawiEvent(event) {
+    event.preventDefault();
+    var val = event.target.value;
+	var formData = new FormData();
+	formData.append("relation_avec_victime", $("#relation_dawi").val());
+	formData.append("droit_compensation", $(".droit_compensation:checked").val());
+	formData.append("id_victime", $("#etatVictime").val());
+	formData.append("cni", $("#cni_famille_victime").val());
+	formData.append("nom", $("#nomfam_famille_victime").val());
+	formData.append("prenom", $("#prenom_famille_victime").val());
+	formData.append("date_naissance", $("#naissance_famille_victime").val());
+	formData.append("etat_sociale", $("#etat_sociale_famille_victime").val());
+	formData.append("job", $("#job_famille_victime").val());
+	formData.append("addresse", $("#addresse_famille_victime").val());
 	
+  if(val === "تعديل"){
+    fire_ajax_modifier_dawi(formData);
+  }else{
     fire_ajax_dawi(formData);
+	
+  }
 
 
   /** else {
@@ -426,6 +426,7 @@ function addDawiEvent(event) {
   }*/
 }
 
+// la confirmation de la suppression
 
 function supprimerDawi(event,idDawi, idVictime){
 	event.preventDefault();
@@ -438,6 +439,8 @@ function supprimerDawi(event,idDawi, idVictime){
 	  }
   
 }
+
+// declanchement de la suppression d'un Dawi avec ajax
 
 function fire_ajax_delete_dawi(formData){
 	$.ajax({
@@ -461,6 +464,8 @@ function fire_ajax_delete_dawi(formData){
 }
 
 
+// charger la forme avec les information de Dawi pour que l'utilisateur peut les modifier
+
 function modifierDawi(event,nom, prenom, relation,cin,dateNaissance,
  situationFamilialle, proffession, ta3wid, addresse ){
 	event.preventDefault();
@@ -480,15 +485,57 @@ function modifierDawi(event,nom, prenom, relation,cin,dateNaissance,
     $("#etat_sociale_famille_victime").val(situationFamilialle);
     $("#job_famille_victime").val(proffession);
     $("#addresse_famille_victime").val(addresse);
+    
+    $("#addEditDawiBtn").val("تعديل");
 
 	
 }
 
+// l'envoi des nouvelles infos de Dawi a modifier
+
+function fire_ajax_modifier_dawi(formData) {
+  $.ajax({
+    type: "POST",
+    url: "Client/ajouterDossier/modifierDawi",
+    processData: false,
+    contentType: false,
+    cache: false,
+    data: formData,
+    timeout: 600000,
+    success: function (data) {
+	console.log(data);
+      if (data[0]["message"]==="تم إضافة ذي الحقوق بنجاح"){
+		console.log(data);
+        var success = "تم إضافة ذي الحقوق بنجاح";
+        $("#dawiModalBody").empty();
+        $("#dawiModalBody").append(success);
+		
+        var btn =
+          '<button type="button" class="btn btn-primary" data-dismiss="modal">حفظ</button>';
+        $("#dawiModalBtn").empty();
+        $("#dawiModalBtn").append(btn);
+        fillTable(data,1);
+      } else {
+		console.log(data[0]["error"]);
+        var error = data[0]["error"];
+        $("#dawiModalBody").empty();
+        $("#dawiModalBody").append(error);
+
+        var btn =
+          '<button type="button" class="btn btn-danger" data-dismiss="modal">إعادة المحاولة</button>';
+        $("#dawiModalBtn").empty();
+        $("#dawiModalBtn").append(btn);
+      }
+    },
+    error: function () {},
+  });
+}
+
+// remplissage de la table des Dawis selon un victime
 function fillTable(data, n){
 	
         var dawi_element ="";
 		for (var i =n ; i < data.length; i++) {
-			var nom =data[i]["nom"];
     		dawi_element+=
 	          "<tr><td>" +
 	          data[i]["nom"] +
@@ -505,6 +552,8 @@ function fillTable(data, n){
 		$("#table_dawi_body").append(dawi_element);
         
 }
+
+// l'envoi des infos d'un Dawi pour l'ajout
 
 function fire_ajax_dawi(formData) {
   $.ajax({
@@ -543,6 +592,7 @@ function fire_ajax_dawi(formData) {
   });
 }
 
+
 function insert_dawi(formData) {
   $.ajax({
     type: "POST",
@@ -577,7 +627,7 @@ function insert_dawi(formData) {
   });
 }
 
-// Ajout d'un avocat pour victime
+// l'ajout d'un avocat pour un victime
 
 function addAvocatVictimeEvent(event) {
   event.preventDefault();
