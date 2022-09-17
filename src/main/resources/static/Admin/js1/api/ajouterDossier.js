@@ -389,6 +389,25 @@ function calculerAge(dateNaiss){
 
 // l'ajout d'un dawi
 
+
+// vider la form apres l'jout et la modification d'un dawi
+function viderLaForme(){
+	
+	$("#relation_dawi").prop('selectedIndex',0);
+	$("#cni_famille_victime").val("");
+    $("#nomfam_famille_victime").val("");
+    $("#prenom_famille_victime").val("");
+    
+    $('#naissance_famille_victime').datepicker({
+        "setDate": new Date(),
+        "autoclose": true
+	});
+	
+    $("#etat_sociale_famille_victime").prop('selectedIndex',0);
+    $("#job_famille_victime").prop('selectedIndex',0);
+    $("#addresse_famille_victime").val("");
+}
+
 function addEditDawiEvent(event) {
     event.preventDefault();
     var val = $("#addEditDawiBtn").text();
@@ -507,17 +526,17 @@ function fire_ajax_modifier_dawi(formData) {
     timeout: 600000,
     success: function (data) {
 	console.log(data);
-      if (data[0]["message"]==="تم إضافة ذي الحقوق بنجاح"){
+      if (data[0]["message"]==="تم تحديث ذي الحقوق بنجاح."){
 		console.log(data);
-        var success = "تم إضافة ذي الحقوق بنجاح";
         $("#dawiModalBody").empty();
-        $("#dawiModalBody").append(success);
+        $("#dawiModalBody").append(data[0]["message"]);
 		
         var btn =
           '<button type="button" class="btn btn-primary" data-dismiss="modal">حفظ</button>';
         $("#dawiModalBtn").empty();
         $("#dawiModalBtn").append(btn);
         fillTable(data,1);
+        viderLaForme();
       } else {
 		console.log(data[0]["error"]);
         var error = data[0]["error"];
@@ -528,6 +547,7 @@ function fire_ajax_modifier_dawi(formData) {
           '<button type="button" class="btn btn-danger" data-dismiss="modal">إعادة المحاولة</button>';
         $("#dawiModalBtn").empty();
         $("#dawiModalBtn").append(btn);
+        
       }
     },
     error: function () {},
@@ -589,6 +609,7 @@ function fire_ajax_dawi(formData) {
           '<button type="button" class="btn btn-danger" data-dismiss="modal">إعادة المحاولة</button>';
         $("#dawiModalBtn").empty();
         $("#dawiModalBtn").append(btn);
+        viderLaForme();
       }
     },
     error: function () {},

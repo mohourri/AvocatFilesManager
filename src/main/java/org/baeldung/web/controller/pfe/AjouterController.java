@@ -821,7 +821,7 @@ public List<Object> modifierDawi(
 				dawi.setAddresse(addresse);
 				dawi.setProffession(job);
 				dawi.setDateNaissance(formatter.parse(date_naissance));
-				listDawis.add(new GenericResponse("تم تحديث ذي الحقوق بنجاح.", "success"));
+				listDawis.add(new GenericResponse("تم تحديث ذي الحقوق بنجاح.", "message"));
 			}
 		}
 		listDawis.addAll(victimDawiList(Long.parseLong(id_victime)));
@@ -829,7 +829,7 @@ public List<Object> modifierDawi(
 		
 	} catch (Exception e) {
 		e.printStackTrace();
-		listDawis.add(new GenericResponse("حدث خطأ، لم يتم تحديث ذي الحقوق.", "error"));
+		listDawis.add(new GenericResponse("حدث خطأ، لم يتم تحديث ذي الحقوق.", "message"));
 		return listDawis;
 	}
 }
