@@ -622,6 +622,7 @@ display:block
 																		<div class="col-md-6">
 																			<label>القرابة:</label> 
 																			<select 
+																			onchange="isSetQaraba();"
 																				class="form-control m-b" name="relation_dawi"
 																				id="relation_dawi">
 																				<option disabled selected>حدد نوع القرابة</option>
@@ -640,7 +641,7 @@ display:block
 
 																	</div>
 																	<div class="field_form" id="liste_dawi"
-																		style="display: block">
+																		style="display: none">
 																		<div class="row">
 																		<div class="field_form" id="field_dawi" >
 
@@ -740,27 +741,27 @@ display:block
 																					إضافة ذي الحقوق </span>
 																			</div><br>
  																		-->
-																		</div>
+																		</div>			
+																		<div class="row">
+																			<div class="col-md-6"></div>
+																			<div class="col-md-6">
+																				<br>
+																				<div class="col-md-4"></div>
+																				<div class="col-md-4">
+																					<button type="button" class="btn btn-primary"
+																						data-toggle="modal" data-target="#dawiModalDiv"
+																						onclick="addEditDawiEvent(event); isSetQaraba();"
+																						id="addEditDawiBtn">إضافة
+																						ذي الحقوق</button>
+																				</div>
+																				
+																				<div class="col-md-4"></div>
+																			</div>
+
+																	   </div>
 																	</div>
 																	<br>
-																	
-														<div class="row">
-																		<div class="col-md-6"></div>
-																		<div class="col-md-6">
-																			<br>
-																			<div class="col-md-4"></div>
-																			<div class="col-md-4">
-																				<button type="button" class="btn btn-primary"
-																					data-toggle="modal" data-target="#dawiModalDiv"
-																					onclick="addEditDawiEvent(event);"
-																					id="addEditDawiBtn">إضافة
-																					ذي الحقوق</button>
-																			</div>
-																			
-																			<div class="col-md-4"></div>
-																		</div>
-
-																	</div>
+														
 																</div>
 																</div>
 																

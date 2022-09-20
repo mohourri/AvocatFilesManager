@@ -26,7 +26,7 @@ public class VictimDawi {
 	
 	private String situationFamilialle;
 	
-	private Date dateNaissance;
+	private String dateNaissance;
 	
 	private Double ta3widDawi;
 	
@@ -43,7 +43,7 @@ public class VictimDawi {
 
 
 	public VictimDawi(Long idVictime, Long idDawi, String cin, String nom, String prenom, String addresse,
-			String situationFamilialle, Date dateNaissance, Double ta3widDawi, Double ta3widMa3nawi, String proffession,
+			String situationFamilialle, String dateNaissance, Double ta3widDawi, Double ta3widMa3nawi, String proffession,
 			Integer nisbMadi, String relation, String ta3wid) {
 		super();
 		this.idVictime = idVictime;
@@ -128,11 +128,11 @@ public class VictimDawi {
 		this.situationFamilialle = situationFamilialle;
 	}
 
-	public Date getDateNaissance() {
+	public String getDateNaissance() {
 		return dateNaissance;
 	}
 
-	public void setDateNaissance(Date dateNaissance) {
+	public void setDateNaissance(String dateNaissance) {
 		this.dateNaissance = dateNaissance;
 	}
 

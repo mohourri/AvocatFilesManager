@@ -250,13 +250,15 @@ public class AjouterController {
 	
 	public List<Object> victimDawiList(Long idVictm){
 		List<Object> victimeDawis = new ArrayList<Object>();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy / MM / dd");
+
 		try {
 
 			DroitsPersonneDecedee victimDawi = new DroitsPersonneDecedee();
 			for (Indemnite object : ajouterService.listeIndemnites()) {
 				if(object.getIdVictime().toString().equals(idVictm.toString())) {
 					victimDawi = (DroitsPersonneDecedee)ajouterService.consulterDawi(object.getIdDawi());
-					VictimDawi VD = new VictimDawi(idVictm, object.getIdDawi(), victimDawi.getCin(),victimDawi.getNom(), victimDawi.getPrenom(),victimDawi.getAddresse(),victimDawi.getSituationFamilialle(),victimDawi.getDateNaissance(),victimDawi.getTa3wid(),victimDawi.getTa3widMa3nawi(),victimDawi.getProffession(),victimDawi.getNisbMadi(), object.getCoteFamille(), object.getHa9Ta3wid());
+					VictimDawi VD = new VictimDawi(idVictm, object.getIdDawi(), victimDawi.getCin(),victimDawi.getNom(), victimDawi.getPrenom(),victimDawi.getAddresse(),victimDawi.getSituationFamilialle(),formatter.format(victimDawi.getDateNaissance()) ,victimDawi.getTa3wid(),victimDawi.getTa3widMa3nawi(),victimDawi.getProffession(),victimDawi.getNisbMadi(), object.getCoteFamille(), object.getHa9Ta3wid());
 					victimeDawis.add(VD);
 				}
 			}
@@ -325,7 +327,7 @@ public class AjouterController {
 			for (Indemnite object : ajouterService.listeIndemnites()) {
 				if(object.getIdVictime().toString().equals(id_victime)) {
 					victimDawi = (DroitsPersonneDecedee)ajouterService.consulterDawi(object.getIdDawi());
-					VictimDawi VD = new VictimDawi(Long.parseLong(id_victime), object.getIdDawi(), victimDawi.getCin(),victimDawi.getNom(), victimDawi.getPrenom(),victimDawi.getAddresse(),victimDawi.getSituationFamilialle(),victimDawi.getDateNaissance(),victimDawi.getTa3wid(),victimDawi.getTa3widMa3nawi(),victimDawi.getProffession(),victimDawi.getNisbMadi(), object.getCoteFamille(), object.getHa9Ta3wid());
+					VictimDawi VD = new VictimDawi(Long.parseLong(id_victime), object.getIdDawi(), victimDawi.getCin(),victimDawi.getNom(), victimDawi.getPrenom(),victimDawi.getAddresse(),victimDawi.getSituationFamilialle(),formatter.format(victimDawi.getDateNaissance()) ,victimDawi.getTa3wid(),victimDawi.getTa3widMa3nawi(),victimDawi.getProffession(),victimDawi.getNisbMadi(), object.getCoteFamille(), object.getHa9Ta3wid());
 
 					if(victimeDawis.size() == 0) {
 						victimeDawis.add(new GenericResponse("تم إضافة ذي الحقوق بنجاح", "success"));

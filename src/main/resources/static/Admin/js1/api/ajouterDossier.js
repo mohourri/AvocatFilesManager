@@ -506,20 +506,15 @@ function modifierDawi(event,nom, prenom, relation,cin,dateNaissance,
 	$("#cni_famille_victime").val(cin);
     $("#nomfam_famille_victime").val(nom);
     $("#prenom_famille_victime").val(prenom);
-    console.log(typeof(dateNaissance));
-    var date = new Date();
-    date.setUTCSeconds(parseInt(dateNaissance));
-	var currentDate = date.toISOString().substring(0,10);
-	
-	document.getElementById('naissance_famille_victime').value = currentDate;
-    //$("#naissance_famille_victime").datepicker("setDate", date);
+    console.log("data type of this date is : "+dateNaissance);
+    $("#naissance_famille_victime").val(dateNaissance);
     $("#etat_sociale_famille_victime").val(situationFamilialle);
     $("#job_famille_victime").val(proffession);
     $("#addresse_famille_victime").val(addresse);
     
     $("#addEditDawiBtn").text("تعديل");
-    $("#addDawiTittle").append("");
-    $("#addDawiTittle").append("تعديل ذي حقوق");
+    $("#addDawiTittle").text("");
+    $("#addDawiTittle").text("تعديل ذي حقوق");
 
 	
 }
@@ -662,6 +657,18 @@ function insert_dawi(formData) {
 }
 */
 
+
+// verification de la relation entre le victime et le titulaire du droit s'elle s'est precise
+function isSetQaraba(){
+	var val = document.getElementById("relation_dawi").selectedIndex;
+	console.log(val);
+	if(val > 0){
+		$("#liste_dawi").show();
+	}else{
+		$("#liste_dawi").hide();
+		
+	}
+}
 // l'ajout d'un avocat pour un victime
 
 function addAvocatVictimeEvent(event) {

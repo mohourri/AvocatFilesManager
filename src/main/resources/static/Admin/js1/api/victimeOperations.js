@@ -125,6 +125,7 @@ function loadVictimeInfos(event){
 			$("#etat_social_victime_up").val(data["victime"]["situationFamiliale"]);
 			$("#nombre_enfants_victime_up").val(data["victime"]["nombreEnfant"]);
 			$("#salaire_annuel_victime_up").val(data["victime"]["salaire"]);
+    		console.log("data type of this date is : "+data["dateNaissance"]);
 			$("#date_naissance_victime_up").val(data["dateNaissance"]);
 			$("#job_victime_up").val(data["victime"]["proffession"]);
 			$("#lieu_naissance_victime_up").val(data["victime"]["lieuNaissance"]);
