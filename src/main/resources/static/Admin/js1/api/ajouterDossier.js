@@ -354,23 +354,23 @@ function updateEtatVictime() {
   });
 }
 
+// switcher entre les rubriques dans Modal d'ajout et de modification'
+function openTab(evt, tabName) {
+	evt.preventDefault();
+	  var i, tabcontent, tablinks;
+	  tabcontent = document.getElementsByClassName("tabcontent");
+	  for (i = 0; i < tabcontent.length; i++) {
+	    tabcontent[i].style.display = "none";
+	  }
+	  
+	  tablinks = document.getElementsByClassName("tablinks");
+	  for (i = 0; i < tablinks.length; i++) {
+	    tablinks[i].className = tablinks[i].className.replace(" active", "");
+	  }
+	  document.getElementById(tabName).style.display = "block";
+	  evt.currentTarget.className += " active";
+	}
 
-	function openTab(evt, tabName) {
-		evt.preventDefault();
-		  var i, tabcontent, tablinks;
-		  tabcontent = document.getElementsByClassName("tabcontent");
-		  for (i = 0; i < tabcontent.length; i++) {
-		    tabcontent[i].style.display = "none";
-		  }
-		  
-		  tablinks = document.getElementsByClassName("tablinks");
-		  for (i = 0; i < tablinks.length; i++) {
-		    tablinks[i].className = tablinks[i].className.replace(" active", "");
-		  }
-		  document.getElementById(tabName).style.display = "block";
-		  evt.currentTarget.className += " active";
-		}
-	
 
 // calcule age
 /*
@@ -390,8 +390,8 @@ function calculerAge(dateNaiss){
 // l'ajout d'un dawi
 
 
-// vider la form apres l'jout et la modification d'un dawi
-function viderLaForme(){
+// initialiser la form apres l'jout et la modification d'un dawi
+function initialiserForme(){
 	
 	$("#relation_dawi").prop('selectedIndex',0);
 	$("#cni_famille_victime").val("");
@@ -406,6 +406,9 @@ function viderLaForme(){
     $("#etat_sociale_famille_victime").prop('selectedIndex',0);
     $("#job_famille_victime").prop('selectedIndex',0);
     $("#addresse_famille_victime").val("");
+    var addDawitittle = "إضافة ذي حقوق جديد للضحية   [" + data[1]["prenom"] + " " + data[1]["nom"] + "]";
+    $("#addDawiTittle").append(addDawitittle);
+
 }
 
 function addEditDawiEvent(event) {
@@ -503,12 +506,16 @@ function modifierDawi(event,nom, prenom, relation,cin,dateNaissance,
 	$("#cni_famille_victime").val(cin);
     $("#nomfam_famille_victime").val(nom);
     $("#prenom_famille_victime").val(prenom);
-    $("#naissance_famille_victime").valueAsDate = new Date();
+    console.log(dateNaissance);
+    var date = new Date(dateNaissance);
+    $("#naissance_famille_victime").datepicker("setDate", date);
     $("#etat_sociale_famille_victime").val(situationFamilialle);
     $("#job_famille_victime").val(proffession);
     $("#addresse_famille_victime").val(addresse);
     
     $("#addEditDawiBtn").text("تعديل");
+    $("#addDawiTittle").text("");
+    $("#addDawiTittle").text("تعديل ذي حقوق");
 
 	
 }
@@ -525,7 +532,6 @@ function fire_ajax_modifier_dawi(formData) {
     data: formData,
     timeout: 600000,
     success: function (data) {
-	console.log(data);
       if (data[0]["message"]==="تم تحديث ذي الحقوق بنجاح."){
 		console.log(data);
         $("#dawiModalBody").empty();
@@ -536,7 +542,7 @@ function fire_ajax_modifier_dawi(formData) {
         $("#dawiModalBtn").empty();
         $("#dawiModalBtn").append(btn);
         fillTable(data,1);
-        viderLaForme();
+        initialiserForme();
       } else {
 		console.log(data[0]["error"]);
         var error = data[0]["error"];
@@ -599,6 +605,7 @@ function fire_ajax_dawi(formData) {
         $("#dawiModalBtn").empty();
         $("#dawiModalBtn").append(btn);
         fillTable(data,1);
+        initialiserForme();
       } else {
 		console.log(data[0]["error"]);
         var error = data[0]["error"];
@@ -609,14 +616,13 @@ function fire_ajax_dawi(formData) {
           '<button type="button" class="btn btn-danger" data-dismiss="modal">إعادة المحاولة</button>';
         $("#dawiModalBtn").empty();
         $("#dawiModalBtn").append(btn);
-        viderLaForme();
       }
     },
     error: function () {},
   });
 }
 
-
+/*
 function insert_dawi(formData) {
   $.ajax({
     type: "POST",
@@ -650,6 +656,7 @@ function insert_dawi(formData) {
     error: function () {},
   });
 }
+*/
 
 // l'ajout d'un avocat pour un victime
 
