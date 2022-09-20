@@ -397,17 +397,17 @@ function initialiserForme(){
 	$("#cni_famille_victime").val("");
     $("#nomfam_famille_victime").val("");
     $("#prenom_famille_victime").val("");
-    
+    /*
     $('#naissance_famille_victime').datepicker({
         "setDate": new Date(),
         "autoclose": true
 	});
-	
+	*/
     $("#etat_sociale_famille_victime").prop('selectedIndex',0);
     $("#job_famille_victime").prop('selectedIndex',0);
     $("#addresse_famille_victime").val("");
-    var addDawitittle = "إضافة ذي حقوق جديد للضحية   [" + data[1]["prenom"] + " " + data[1]["nom"] + "]";
-    $("#addDawiTittle").append(addDawitittle);
+
+    $("#addDawiTittle").text("");
 
 }
 
@@ -506,16 +506,20 @@ function modifierDawi(event,nom, prenom, relation,cin,dateNaissance,
 	$("#cni_famille_victime").val(cin);
     $("#nomfam_famille_victime").val(nom);
     $("#prenom_famille_victime").val(prenom);
-    console.log(dateNaissance);
-    var date = new Date(dateNaissance);
-    $("#naissance_famille_victime").datepicker("setDate", date);
+    console.log(typeof(dateNaissance));
+    var date = new Date();
+    date.setUTCSeconds(parseInt(dateNaissance));
+	var currentDate = date.toISOString().substring(0,10);
+	
+	document.getElementById('naissance_famille_victime').value = currentDate;
+    //$("#naissance_famille_victime").datepicker("setDate", date);
     $("#etat_sociale_famille_victime").val(situationFamilialle);
     $("#job_famille_victime").val(proffession);
     $("#addresse_famille_victime").val(addresse);
     
     $("#addEditDawiBtn").text("تعديل");
-    $("#addDawiTittle").text("");
-    $("#addDawiTittle").text("تعديل ذي حقوق");
+    $("#addDawiTittle").append("");
+    $("#addDawiTittle").append("تعديل ذي حقوق");
 
 	
 }
